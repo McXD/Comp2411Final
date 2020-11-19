@@ -1,0 +1,34 @@
+Interface for Java Package
+
+1.For Registration / Deregistration
+
+S_REGISTER()
+T_REGISTER()
+C_REGISTER()
+SUB_REGSITER()
+
+MAKE_MEMBER()
+MAKE_HEAD()
+MAKE_TEACH()
+
+
+2.For Reading Records
+
+
+3.For Creating Exam
+
+MAKE_SCHE() --schedule an exam
+SET_EXAM() --set the scheduled exam for a class on a subject
+MAKE_EMPTY_PAPER() 
+ADD_XX_TO_PAPER() --above two make exam paper for the exam
+
+4.For Sitting Exam
+
+STUDENT_SITS_EXAM()
+
+5.For Exam Grading
+
+STUDENT_GETS_GRADE()
+STUDENT_GETS_FEEDBACK()
+
+6.For Retrieving Exam Results
