@@ -46,16 +46,16 @@ CREATE TABLE subject
 ,sub_title VARCHAR2(50));
 
 CREATE TABLE teaches
-(t_id CHAR(9) CONSTRAINT fk_teaches_1 REFERENCES teacher(t_id)
-,sub_id VARCHAR2(10) CONSTRAINT fk_teaches_2 REFERENCES subject(sub_id)
-,c_id CHAR(4) CONSTRAINT fk_teaches_3 REFERENCES class(c_id)
+(t_id CHAR(9) CONSTRAINT fk_teaches_1 REFERENCES teacher(t_id) ON DELETE CASCADE
+,sub_id VARCHAR2(10) CONSTRAINT fk_teaches_2 REFERENCES subject(sub_id) ON DELETE CASCADE
+,c_id CHAR(4) CONSTRAINT fk_teaches_3 REFERENCES class(c_id) ON DELETE CASCADE
 ,CONSTRAINT pk_teaches PRIMARY KEY (t_id, sub_id, c_id));
 
 CREATE TABLE exam_sche
 (t_id CHAR(9) CONSTRAINT fk_exam_sche REFERENCES teacher(t_id)
 ,e_id CHAR(4)
 ,e_start DATE
-,e_dura INTERVAL DAY TO SECOND
+,e_dura NUMBER
 ,CONSTRAINT pk_exam_sche PRIMARY KEY (t_id,e_id));
 
 CREATE TABLE sets
@@ -72,7 +72,7 @@ CREATE TABLE sets
 CREATE OR REPLACE TYPE answer_sheet_t IS OBJECT
 (answer_mc VARCHAR2(100)
 ,answer_fb VARCHAR2(1000)
-,answer_fl CLOB)
+,answer_fl VARCHAR2(4000))
 NOT FINAL;
 /
 
@@ -95,16 +95,16 @@ CREATE TABLE sits
 ,e_id CHAR(4)
 ,answer_sheet answer_sheet_t
 ,grade NUMBER
-,feedback CLOB
+,feedback VARCHAR2(4000)
 ,CONSTRAINT pk_sits PRIMARY KEY (s_id, t_id, e_id)
 ,CONSTRAINT fk_sits_2 FOREIGN KEY (t_id, e_id) REFERENCES exam_sche(t_id,e_id) ON DELETE CASCADE);
 
 CREATE OR REPLACE TYPE question_mc_t IS OBJECT
-(text CLOB
-,option_a CLOB
-,option_b CLOB
-,option_c CLOB
-,option_d CLOB
+(text VARCHAR2(4000)
+,option_a VARCHAR2(4000)
+,option_b VARCHAR2(4000)
+,option_c VARCHAR2(4000)
+,option_d VARCHAR2(4000)
 ,answer CHAR(1)
 ,point NUMBER
 ,flag NUMBER)
@@ -112,7 +112,7 @@ NOT FINAL;
 /
  
 CREATE OR REPLACE TYPE question_fb_t IS OBJECT
-(text CLOB
+(text VARCHAR2(4000)
 ,answer VARCHAR(1000)
 ,point NUMBER
 ,flag NUMBER)
@@ -120,7 +120,7 @@ NOT FINAL;
 /
 
 CREATE OR REPLACE TYPE question_fl_t IS OBJECT
-(text CLOB
+(text VARCHAR2(4000)
 ,point NUMBER
 ,flag NUMBER)
 NOT FINAL;
@@ -189,13 +189,13 @@ BEGIN
 END make_teach;
 /
 
-CREATE OR REPLACE PROCEDURE make_sche(t_id IN CHAR, e_id IN CHAR, e_start IN DATE, e_dura IN INTERVAL DAY TO SECOND) IS
+CREATE OR REPLACE PROCEDURE make_sche(t_id IN CHAR, e_id IN CHAR, e_start IN DATE, e_dura IN NUMBER) IS
 BEGIN
     INSERT INTO exam_sche values(t_id, e_id, e_start, e_dura);
 END make_sche;
 /
 
-CREATE OR REPLACE FUNCTION make_mc(text IN CLOB, option_a CLOB ,option_b CLOB ,option_c CLOB ,option_d CLOB ,answer CHAR ,point NUMBER ,flag NUMBER)
+CREATE OR REPLACE FUNCTION make_mc(text IN VARCHAR2, option_a VARCHAR2 ,option_b VARCHAR2 ,option_c VARCHAR2 ,option_d VARCHAR2 ,answer CHAR ,point NUMBER ,flag NUMBER)
     RETURN question_mc_t IS
 question_mc question_mc_t := question_mc_t(text,option_a,option_b,option_c,option_d,answer,point,flag);
 BEGIN
@@ -203,7 +203,7 @@ BEGIN
 END make_mc;
 /
 
-CREATE OR REPLACE FUNCTION make_fb(text IN CLOB ,answer CHAR ,point NUMBER ,flag NUMBER)
+CREATE OR REPLACE FUNCTION make_fb(text IN VARCHAR2 ,answer CHAR ,point NUMBER ,flag NUMBER)
     RETURN question_fb_t IS
 question_fb question_fb_t := question_fb_t(text,answer,point,flag);
 BEGIN
@@ -211,7 +211,7 @@ BEGIN
 END make_fb;
 /
 
-CREATE OR REPLACE FUNCTION make_fl(text IN CLOB,point NUMBER ,flag NUMBER)
+CREATE OR REPLACE FUNCTION make_fl(text IN VARCHAR2,point NUMBER ,flag NUMBER)
     RETURN question_fl_t IS
 question_fl question_fl_t := question_fl_t(text,point,flag);
 BEGIN
@@ -267,21 +267,21 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE PROCEDURE store_answer_sheet(s_id IN CHAR ,answer_mc IN VARCHAR2, answer_fb IN VARCHAR2, answer_fl IN CLOB) IS
+create or replace PROCEDURE store_answer_sheet(s_idin IN CHAR,e_idin IN CHAR, t_idin IN CHAR,answer_mc IN VARCHAR2, answer_fb IN VARCHAR2, answer_fl IN VARCHAR2) IS
 sheet ANSWER_SHEET_T;
 BEGIN
     sheet := answer_sheet_t(answer_mc, answer_fb, answer_fl);
     UPDATE sits s
     SET answer_sheet = sheet
-    WHERE s.s_id = s_id;
+    WHERE s.s_id = s_idin AND s.e_id = e_idin AND s.t_id = t_idin;
 END;
 /
 
-CREATE OR REPLACE PROCEDURE student_sits_exam(s_id IN CHAR, t_id IN CHAR, e_id IN CHAR 
-    ,answer_mc IN VARCHAR2, answer_fb IN VARCHAR2, answer_fl IN CLOB) IS
+create or replace PROCEDURE student_sits_exam(s_id IN CHAR, t_id IN CHAR, e_id IN CHAR 
+    ,answer_mc IN VARCHAR2, answer_fb IN VARCHAR2, answer_fl IN VARCHAR2) IS
 BEGIN
     insert into sits values(s_id,t_id,e_id,null,null,null);
-    store_answer_sheet(s_id,answer_mc,answer_fb,answer_fl);
+    store_answer_sheet(s_id,e_id,t_id,answer_mc,answer_fb,answer_fl);
 END;
 /
 
@@ -293,7 +293,7 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE PROCEDURE student_gets_feedback(s_idin IN CHAR,t_idin IN CHAR, e_idin IN CHAR, feedbackin IN CLOB) IS
+CREATE OR REPLACE PROCEDURE student_gets_feedback(s_idin IN CHAR,t_idin IN CHAR, e_idin IN CHAR, feedbackin IN VARCHAR2) IS
 BEGIN
     UPDATE sits st
     SET st.feedback = feedbackin
@@ -302,3 +302,4 @@ END;
 /
 
 commit;
+
