@@ -81,7 +81,7 @@ public class TeacherLoginSession {
 			PreparedStatement pst3 = con.prepareStatement("CALL set_exam(?,?,?,?)");
 
 			String eid = e.eid;
-			java.sql.Date start = java.sql.Date.valueOf(e.start.toString());
+			Timestamp start = Timestamp.valueOf(e.start);
 			int dura = e.duration;
 			Paper paper = e.withPaper;
 			String pid = paper.pid;
@@ -90,7 +90,7 @@ public class TeacherLoginSession {
 			
 			pst1.setString(1,teacher.tid);
 			pst1.setString(2, eid);
-			pst1.setDate(3, start);
+			pst1.setTimestamp(3, start);
 			pst1.setInt(4, dura);
 			
 			pst2.setString(1, pid);
@@ -129,7 +129,7 @@ public class TeacherLoginSession {
 			
 			ArrayList<FlQuestion> fls = paper.getFls();
 			for(FlQuestion f : fls) {
-				create = String.format("QUESTION_FL_T(%s, %s, %d, %d)", f.text, f.point, f.flag? 1 : 0);
+				create = String.format("QUESTION_FL_T(%s, %d, %d)", f.text, f.point, f.flag? 1 : 0);
 				query = String.format("CALL ADD_FL_TO_PAPER(%s, %s, %s)",pid,eid,create);
 				st.execute(query);
 			}
@@ -137,7 +137,12 @@ public class TeacherLoginSession {
 			con.commit();
 			
 		} catch (SQLException e1) {
+			String msg = e1.getMessage();
+			if (msg.contains("ORA-02291")) {
+				System.err.println("Permission denied!");
+			}
 			System.err.println(e1.getMessage());
+			e1.printStackTrace();
 		}
 	}
 

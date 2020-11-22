@@ -13,7 +13,6 @@ public class TeacherUI {
 	TeacherLoginSession tls;
 	
 	public TeacherUI() {
-		while (true){
 			try {
 				@SuppressWarnings("resource")
 				Scanner sc = new Scanner(System.in);
@@ -27,6 +26,8 @@ public class TeacherUI {
 				
 				while (true) {
 					System.out.print("1 to schedule exam, 2 to grade papers, 3 to exit: ");
+					
+					//For some reason, it doesn't block
 					choice = Integer.parseInt(sc.nextLine());
 					
 					try {
@@ -45,16 +46,16 @@ public class TeacherUI {
 					}catch (SQLException se) {
 						System.err.println(se.getMessage());
 					}catch (Exception e) {
-						System.err.println("Something Unexpected happened");
+						e.printStackTrace();
 					}
 				}
 					
 			}catch (IdentityException e) {
 					System.err.println(e.getMessage());
 			}catch (Exception ea) {
+					ea.printStackTrace();
 					System.err.println("Unknown Error");
 			}
-		}
 	}
 		
 	

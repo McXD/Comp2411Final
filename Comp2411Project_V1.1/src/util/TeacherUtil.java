@@ -1,6 +1,7 @@
 package util;
 
 import java.util.Scanner;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -87,8 +88,18 @@ public class TeacherUtil {
 		System.out.println("Input Paper id: ");
 		Paper paper = new Paper(sc.nextLine());
 		
-		System.out.println("Input Exam data: ");
-		LocalDateTime date = LocalDateTime.parse(sc.nextLine(), DateTimeFormatter.BASIC_ISO_DATE);
+		System.out.println("Input Exam date: ");
+		boolean invalid = true;
+		LocalDateTime date = null;
+		while (invalid) {
+			try {
+				date = LocalDateTime.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm:ss a"));
+				invalid = false;
+			}catch(DateTimeException e) {
+				System.err.println(e.getMessage());
+				System.err.println("Input date should like this: " + "28-Apr-2015 01:25:00 PM");
+			}
+		}
 		
 		System.out.println("Input Duration(in minute): ");
 		int dura = Integer.parseInt(sc.nextLine());

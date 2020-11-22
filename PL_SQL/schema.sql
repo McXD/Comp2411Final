@@ -54,7 +54,7 @@ CREATE TABLE teaches
 CREATE TABLE exam_sche
 (t_id CHAR(9) CONSTRAINT fk_exam_sche REFERENCES teacher(t_id)
 ,e_id CHAR(4)
-,e_start DATE
+,e_start TIMESTAMP(6)
 ,e_dura NUMBER
 ,CONSTRAINT pk_exam_sche PRIMARY KEY (t_id,e_id));
 
