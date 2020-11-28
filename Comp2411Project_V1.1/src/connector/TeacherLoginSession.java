@@ -50,7 +50,7 @@ public class TeacherLoginSession {
 				
 				HashMap<Class0,Subject> teaches = new HashMap<Class0, Subject>();
 				while(rs.next()) {
-					teaches.put(new Class0(rs.getString("c_id")), new Subject(rs.getString("sub_id")));
+					teaches.put(new Class0(rs.getString("c_id")), new Subject(rs.getString("sub_id").trim()));
 				}
 				
 				
@@ -74,7 +74,7 @@ public class TeacherLoginSession {
 	
 	public void setExam(Exam e){
 		//Read information into database
-		
+		System.out.println("in setExam");
 		try {
 			PreparedStatement pst1 = con.prepareStatement("CALL make_sche(?,?,?,?)");
 			PreparedStatement pst2 = con.prepareStatement("CALL make_empty_paper(?,?,?)");
@@ -87,6 +87,7 @@ public class TeacherLoginSession {
 			String pid = paper.pid;
 			String cid = e.forClass.cid;
 			String sub_id = e.onSubject.sub_id;
+			String tid = teacher.tid;
 			
 			pst1.setString(1,teacher.tid);
 			pst1.setString(2, eid);
@@ -106,34 +107,56 @@ public class TeacherLoginSession {
 			pst2.execute();
 			pst3.execute();
 			
-			Statement st = con.createStatement();
-			String query;
-			String create;
+			System.out.println("Preparing statement");
+			PreparedStatement mcpst = con.prepareStatement("CALL ADD_MC_TO_PAPER(?,?,?,QUESTION_MC_T(?,?,?,?,?,?,?,?))");
+			PreparedStatement fbpst = con.prepareStatement("CALL ADD_FB_TO_PAPER(?,?,?,QUESTION_FB_T(?,?,?,?))");
+			PreparedStatement flpst = con.prepareStatement("CALL ADD_FL_TO_PAPER(?,?,?,QUESTION_FL_T(?,?,?))");
 			
 			ArrayList<McQuestion> mcs = paper.getMcs();
 			
 			for(McQuestion m : mcs) {
 				String[] ops = m.getOptions();
-				create = String.format("QUESTION_MC_T(%s,%s,%s,%s,%s,%c,%d,%d)",
-						m.text, ops[0], ops[1], ops[2], ops[3], m.point, m.flag? 1:0);
-				query = String.format("CALL ADD_MC_TO_PAPER(%s, %s, %s)",pid,eid,create);
-				st.execute(query);
+				mcpst.setString(1, pid);
+				mcpst.setString(2, tid);
+				mcpst.setString(3, eid);
+				mcpst.setString(4, m.text);
+				mcpst.setString(5, ops[0]);
+				mcpst.setString(6, ops[1]);
+				mcpst.setString(7, ops[2]);
+				mcpst.setString(8, ops[3]);
+				mcpst.setString(9, m.answer);
+				mcpst.setInt(10, m.point);
+				mcpst.setInt(11, m.flag?1:0);
+				
+				mcpst.execute();
 			}
 			
 			ArrayList<FbQuestion> fbs = paper.getFbs();
 			for(FbQuestion f : fbs) {
-				create = String.format("QUESTION_FB_T(%s, %s, %d, %d)", f.text, f.answer, f.point, f.flag? 1 : 0);
-				query = String.format("CALL ADD_FB_TO_PAPER(%s, %s, %s)",pid,eid,create);
-				st.execute(query);
+				fbpst.setString(1, pid);
+				fbpst.setString(2, tid);
+				fbpst.setString(3, eid);
+				fbpst.setString(4, f.text);
+				fbpst.setString(5, f.answer);
+				fbpst.setInt(6, f.point);
+				fbpst.setInt(7, f.flag?1:0);
+				
+				fbpst.execute();
 			}
 			
 			ArrayList<FlQuestion> fls = paper.getFls();
 			for(FlQuestion f : fls) {
-				create = String.format("QUESTION_FL_T(%s, %d, %d)", f.text, f.point, f.flag? 1 : 0);
-				query = String.format("CALL ADD_FL_TO_PAPER(%s, %s, %s)",pid,eid,create);
-				st.execute(query);
+				flpst.setString(1, pid);
+				flpst.setString(2, tid);
+				flpst.setString(3, eid);
+				flpst.setString(4, f.text);
+				flpst.setInt(5, f.point);
+				flpst.setInt(6, f.flag?1:0);
+				
+				flpst.execute();
 			}
 			
+			System.out.println("Before commit");
 			con.commit();
 			
 		} catch (SQLException e1) {
@@ -151,16 +174,15 @@ public class TeacherLoginSession {
 		try {
 			String query = String.format("UPDATE SITS SET grade = grade + %d, feedback = '%s' WHERE e_id = ? and t_id = ? and s_id = ?",
 					grade,feedback);
-			PreparedStatement pst = con.prepareStatement(query);
-			System.err.println(query);
-			
+			PreparedStatement pst = con.prepareStatement("UPDATE SITS SET grade = grade + ?, feedback = ? WHERE e_id = ? and t_id = ? and s_id = ?");
 			String eid = ash.ofExam.eid;
 			String tid = ash.ofExam.eid;
 			String sid = ash.owner.sid;
-			
-			pst.setString(1, eid);
-			pst.setString(2, tid);
-			pst.setString(3, sid);
+			pst.setInt(1, grade);
+			pst.setString(2, feedback);
+			pst.setString(3, eid);
+			pst.setString(4, tid);
+			pst.setString(5, sid);
 			
 			pst.execute();
 			

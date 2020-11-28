@@ -225,39 +225,21 @@ BEGIN
 END make_empty_paper;
 /
 
-create or replace PROCEDURE add_mc_to_paper(p_id IN CHAR, e_id IN CHAR, mc IN QUESTION_MC_T) IS
-mc_table QUESTION_MC_TABLE;
+create or replace PROCEDURE add_mc_to_paper(p_idin IN CHAR,t_idin IN CHAR, e_idin IN CHAR, mc IN QUESTION_MC_T) IS
 BEGIN
-    select p_mc into mc_table from paper p where p.p_id = p_id and p.e_id = e_id;
-    mc_table.EXTEND;
-    mc_table(mc_table.LAST) := mc;
-    update paper p
-    SET p.p_mc = mc_table
-    where p.p_id = p_id and p.e_id = e_id;
+    insert into table(select p_mc from paper where p_id = p_idin and e_id = e_idin and t_id = t_idin) values(mc);
 END;
 /
 
-create or replace PROCEDURE add_fb_to_paper(p_id IN CHAR, e_id IN CHAR, fb IN QUESTION_fb_T) IS
-fb_table QUESTION_FB_TABLE;
+create or replace PROCEDURE add_fb_to_paper(p_idin IN CHAR, t_idin IN CHAR, e_idin IN CHAR, fb IN QUESTION_fb_T) IS
 BEGIN
-    select p_fb into fb_table from paper p where p.p_id = p_id and p.e_id = e_id;
-    fb_table.EXTEND;
-    fb_table(fb_table.LAST) := fb;
-    update paper p
-    SET p.p_fb = fb_table
-    where p.p_id = p_id and p.e_id = e_id;
+    insert into table(select p_fb from paper where p_id = p_idin and e_id = e_idin and t_id = t_idin) values(fb);
 END;
 /
 
-create or replace PROCEDURE add_fl_to_paper(p_id IN CHAR, e_id IN CHAR, fl IN QUESTION_fl_T) IS
-fl_table QUESTION_FL_TABLE;
+create or replace PROCEDURE add_fl_to_paper(p_idin IN CHAR, t_idin IN CHAR, e_idin IN CHAR, fl IN QUESTION_fl_T) IS
 BEGIN
-    select p_fl into fl_table from paper p where p.p_id = p_id and p.e_id = e_id;
-    fl_table.EXTEND;
-    fl_table(fl_table.LAST) := fl;
-    update paper p
-    SET p.p_fl = fl_table
-    where p.p_id = p_id and p.e_id = e_id;
+    insert into table(select p_fl from paper where p_id = p_idin and e_id = e_idin and t_id = t_idin) values(fl);
 END;
 /
 

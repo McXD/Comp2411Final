@@ -161,4 +161,12 @@ public class TeacherUtil {
 			paper.addFl(flNew);
 		}
 	}
+	
+	public static boolean checkAuthority(Teacher teacher, Class0 clas, Subject sub) {
+		return teacher.canSetExam(clas, sub);
+	}
+	
+	public static String summarizePaper(Paper paper) {
+		return "good";
+	}
 }

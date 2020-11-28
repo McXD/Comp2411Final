@@ -11,7 +11,7 @@ public class Subject {
 	public boolean equals(Object obj) {
 		if (! (obj instanceof Subject)) return false;
 		Subject other = (Subject) obj;
-		return sub_id.compareTo(other.sub_id) == 0;
+		return sub_id.trim().compareTo(other.sub_id.trim()) == 0;
 	}
 	
 	@Override

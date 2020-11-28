@@ -3,6 +3,7 @@ import entity.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import oracle.jdbc.driver.*;
@@ -131,8 +132,8 @@ public class StudentLoginSession
 			ArrayList<Exam> result = new ArrayList<Exam>();
 			
 			PreparedStatement pst = con.prepareStatement(
-					"SELECT t_id, e_id, c_id, sub_id, p_id, e_start, e_dura" +
-					" FROM sets NATURAL JOIN exam_sche NATURAL JOIN paper" +
+					"SELECT t_id, e_id, c_id, sub_id, p_id, e_start, e_dura, t_name" +
+					" FROM sets NATURAL JOIN exam_sche NATURAL JOIN paper NATURAL JOIN teacher" +
 					" WHERE c_id = ?" );
 			pst.setString(1, student.memberOf.cid);
 			
@@ -149,12 +150,12 @@ public class StudentLoginSession
 			
 			while(rs.next()) {
 				
-				teacher = new Teacher(rs.getString(1));
+				teacher = new Teacher(rs.getString(1),rs.getString(8));
 				eid = rs.getString(2);
 				forClass = new Class0(rs.getString(3));
 				onSubject = new Subject(rs.getString(4));
 				pid = rs.getString(5);
-				start = LocalDateTime.parse(rs.getDate(6).toString());
+				start = LocalDateTime.parse(rs.getTimestamp(6).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
 				dura = rs.getInt(7);
 				
 				//Create paper
