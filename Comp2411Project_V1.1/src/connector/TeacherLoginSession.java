@@ -6,6 +6,8 @@ import exception.IdentityException;
 
 import java.util.ArrayList;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import oracle.jdbc.driver.*;
 
@@ -172,12 +174,12 @@ public class TeacherLoginSession {
 	
 	public void grade(AnswerSheet ash, int grade, String feedback){
 		try {
-			String query = String.format("UPDATE SITS SET grade = grade + %d, feedback = '%s' WHERE e_id = ? and t_id = ? and s_id = ?",
-					grade,feedback);
+			System.out.println("In grade()");
 			PreparedStatement pst = con.prepareStatement("UPDATE SITS SET grade = grade + ?, feedback = ? WHERE e_id = ? and t_id = ? and s_id = ?");
 			String eid = ash.ofExam.eid;
-			String tid = ash.ofExam.eid;
+			String tid = ash.ofExam.creator.tid;
 			String sid = ash.owner.sid;
+			System.out.println(eid + " " + tid + " " + sid);
 			pst.setInt(1, grade);
 			pst.setString(2, feedback);
 			pst.setString(3, eid);
@@ -187,34 +189,122 @@ public class TeacherLoginSession {
 			pst.execute();
 			
 			con.commit();
+			System.out.println("Commited");
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	
 	}
 	
-	public ArrayList<AnswerSheet> getSheetForExam(Exam exam) throws SQLException{
-		
-		ArrayList<AnswerSheet> result = new ArrayList<AnswerSheet>();
-		String query = "SELECT s.s_id, s.answer_sheet.answer_mc, s.answer_sheet.answer_fb, s.answer_sheet.answer_fl FROM sits s"
-				+ " WHERE e_id = ? AND t_id = ?";
-		PreparedStatement pst = con.prepareStatement(query);
-		
-		pst.setString(1, exam.eid);
-		pst.setString(2, exam.creator.tid);
-		
-		ResultSet rs = pst.executeQuery();
-		
-		while (rs.next()) {
-			AnswerSheet as = new AnswerSheet(new Student(rs.getString(1)), exam,
-					rs.getString(2), rs.getString(3), rs.getString(4));
-			result.add(as);
+	public ArrayList<AnswerSheet> getSheetForExam(Exam exam){
+		try {
+			ArrayList<AnswerSheet> result = new ArrayList<AnswerSheet>();
+			String query = "SELECT s.s_id, s.answer_sheet.answer_mc, s.answer_sheet.answer_fb, s.answer_sheet.answer_fl FROM sits s"
+					+ " WHERE e_id = ? AND t_id = ?";
+			PreparedStatement pst = con.prepareStatement(query);
+			
+			pst.setString(1, exam.eid);
+			pst.setString(2, exam.creator.tid);
+			
+			ResultSet rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				AnswerSheet as = new AnswerSheet(new Student(rs.getString(1)), exam,
+						rs.getString(2), rs.getString(3), rs.getString(4));
+				result.add(as);
+			}
+			
+			return result;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
-		
-		return result;
 	}
 	
 	public Teacher getTeacher() {
 		return teacher;
+	}
+	
+	public ArrayList<Exam> getAllExam(){
+		try {
+			ArrayList<Exam> result = new ArrayList<Exam>();
+			
+			PreparedStatement pst = con.prepareStatement(
+					"SELECT t_id, e_id, c_id, sub_id, p_id, e_start, e_dura, t_name" +
+					" FROM sets NATURAL JOIN exam_sche NATURAL JOIN paper NATURAL JOIN teacher" +
+					" WHERE t_id = ?" );
+			pst.setString(1, teacher.tid);
+			
+			ResultSet rs = pst.executeQuery();
+			
+			Teacher teacher;
+			String eid;
+			Class0 forClass;
+			Subject onSubject;
+			Paper paper;
+			String pid;
+			LocalDateTime start;
+			int dura;
+			
+			while(rs.next()) {
+				
+				teacher = new Teacher(rs.getString(1),rs.getString(8));
+				eid = rs.getString(2);
+				forClass = new Class0(rs.getString(3));
+				onSubject = new Subject(rs.getString(4));
+				pid = rs.getString(5);
+				start = LocalDateTime.parse(rs.getTimestamp(6).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
+				dura = rs.getInt(7);
+				
+				//Create paper
+				paper = new Paper(pid);
+				
+				//Multi-choice questions
+				PreparedStatement pstMc = con.prepareStatement("SELECT * FROM TABLE(SELECT p_mc FROM paper WHERE t_id = ? AND e_id = ? AND p_id = ?)");
+				pstMc.setString(1, teacher.tid);
+				pstMc.setString(2, eid);
+				pstMc.setString(3, pid);
+				
+				ResultSet rsMc = pstMc.executeQuery();
+				while(rsMc.next()) {
+					paper.addMc(rsMc.getString(1),rsMc.getString(2),rsMc.getString(3),rsMc.getString(4),rsMc.getString(5),
+							rsMc.getString(6),rsMc.getInt(7), rsMc.getInt(8) == 1);
+				}
+				
+				PreparedStatement pstFb = con.prepareStatement("SELECT * FROM TABLE(SELECT p_fb FROM paper WHERE t_id = ? AND e_id = ? AND p_id = ?)");
+				pstFb.setString(1, teacher.tid);
+				pstFb.setString(2, eid);
+				pstFb.setString(3, pid);
+				
+				ResultSet rsFb = pstFb.executeQuery();
+				while(rsFb.next()) {
+					paper.addFb(rsFb.getString(1),rsFb.getString(2),rsFb.getInt(3), rsFb.getInt(4) == 1);
+				}
+				
+				PreparedStatement pstFl = con.prepareStatement("SELECT * FROM TABLE(SELECT p_fl FROM paper WHERE t_id = ? AND e_id = ? AND p_id = ?)");
+				pstFl.setString(1, teacher.tid);
+				pstFl.setString(2, eid);
+				pstFl.setString(3, pid);
+				
+				ResultSet rsFl = pstFl.executeQuery();
+				while(rsFl.next()) {
+					paper.addFl(rsFl.getString(1), rsFl.getInt(2), rsFl.getInt(3) == 1);
+				}
+				
+				result.add(new Exam(teacher, eid, forClass, onSubject, paper, start, dura));
+			}
+			
+			return result;
+		}catch(SQLException e) {
+			//This region should not be reached
+			
+			//For debugging
+			System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+			System.err.println("WARNING");
+			System.err.println("Transparent Region is reached!");
+			e.printStackTrace();
+			
+			return null;
+		}
 	}
 }

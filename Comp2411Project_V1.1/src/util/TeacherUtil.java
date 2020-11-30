@@ -1,5 +1,6 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
@@ -166,7 +167,22 @@ public class TeacherUtil {
 		return teacher.canSetExam(clas, sub);
 	}
 	
+	public static ArrayList<Exam> getAllFinishedExams(ArrayList<Exam> exams){
+		ArrayList<Exam> result = new ArrayList<Exam>();
+		LocalDateTime now = LocalDateTime.now();
+		for (Exam e:exams) {
+			if (e.start.plusMinutes(e.duration).isBefore(now)) result.add(e);
+		}
+		return result;
+	}
+	
+	public static String getExamInfoForTeacher(Exam exam) {
+		return String.format("%8s %8s %15s", exam.eid, exam.forClass, exam.onSubject);
+	}
+	
 	public static String summarizePaper(Paper paper) {
 		return "good";
 	}
+	
+	
 }

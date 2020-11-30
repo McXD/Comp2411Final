@@ -101,7 +101,7 @@ public class StudentLoginSession
 
 	public ArrayList<StudentRecord> checkRecord(){
 		try {
-			PreparedStatement pst = con.prepareStatement("SELECT t_id, e_id grade, feedback FROM SITS WHERE "
+			PreparedStatement pst = con.prepareStatement("SELECT t_id, e_id, grade, feedback FROM SITS WHERE "
 					+ "s_id = ?");
 			
 			pst.setString(1, student.sid);

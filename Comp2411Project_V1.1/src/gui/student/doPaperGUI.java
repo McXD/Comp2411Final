@@ -37,6 +37,10 @@ import java.beans.PropertyChangeEvent;
 
 public class doPaperGUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel mcTabPanel;
 	

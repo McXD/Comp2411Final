@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import gui.student.StudentLoginGUI;
 import gui.teacher.TeacherLoginGUI;
 
 import javax.swing.JLabel;
@@ -16,6 +17,10 @@ import java.awt.event.ActionEvent;
 
 public class MainGUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -26,6 +31,7 @@ public class MainGUI extends JFrame {
 			public void run() {
 				try {
 					MainGUI frame = new MainGUI();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,6 +59,7 @@ public class MainGUI extends JFrame {
 					public void run() {
 						try {
 							TeacherLoginGUI frame = new TeacherLoginGUI();
+							frame.setLocationRelativeTo(null);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -71,6 +78,23 @@ public class MainGUI extends JFrame {
 		contentPane.add(welcomeLabel);
 		
 		JButton studentLoginButton = new JButton("Student Entrance");
+		studentLoginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							StudentLoginGUI frame = new StudentLoginGUI();
+							frame.setLocationRelativeTo(null);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
 		studentLoginButton.setFont(new Font("Arial", Font.PLAIN, 13));
 		studentLoginButton.setBounds(131, 170, 151, 23);
 		contentPane.add(studentLoginButton);

@@ -26,4 +26,15 @@ public class AnswerSheet {
 		
 		return sb.toString();
 	}
+	
+	public String toString(int dull) {
+		String[] flAnswers = flAnswer.split("/");
+		StringBuilder sb = new StringBuilder();
+		int index = 1;
+		for (String s : flAnswers) {
+			sb.append(index + ". " + s + "\n\n");
+		}
+		
+		return sb.toString();
+	}
 }

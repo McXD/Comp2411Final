@@ -1,6 +1,5 @@
 package gui.student;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -19,9 +18,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import connector.StudentLoginSession;
-import util.StudentUtil;
 
 public class StudentLoginGUI extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private StudentLoginSession tls;
 	
@@ -99,11 +102,12 @@ public class StudentLoginGUI extends JFrame {
 					JOptionPane.showMessageDialog(new JFrame(), "Invalid ID or Password!", "Warning",JOptionPane.WARNING_MESSAGE);
 				}else {
 					//call new frame
-					setVisible(false);
+					StudentLoginGUI.this.setVisible(false);
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
 								StudentEntranceGUI frame = new StudentEntranceGUI(tls);
+								frame.setLocationRelativeTo(null);
 								frame.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();

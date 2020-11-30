@@ -129,4 +129,13 @@ public class StudentUtil {
 		return true;
 	}
 	
+	public static Object[][] getRecordTable(ArrayList<StudentRecord> records){
+		Object[][] result = new Object[records.size()][];
+		int i = 0;
+		for (StudentRecord r : records) {
+			result[i++] = new Object[]{r.tid, r.eid, r.grade, r.feedback};
+		}
+		
+		return result;
+	}
 }

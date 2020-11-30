@@ -1,6 +1,5 @@
 package gui.student;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -14,13 +13,17 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import connector.StudentLoginSession;
-import gui.teacher.ScheExamGUI;
-import gui.teacher.TeacherEntranceGUI;
+
 
 public class StudentEntranceGUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private StudentLoginSession sls;
+	
 	
 	/**
 	 * Launch the application.
@@ -67,6 +70,7 @@ public class StudentEntranceGUI extends JFrame {
 					public void run() {
 						try {
 							SitExamGUI frame = new SitExamGUI(StudentEntranceGUI.this, sls);
+							frame.setLocationRelativeTo(null);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -79,6 +83,22 @@ public class StudentEntranceGUI extends JFrame {
 		panel.add(sitExamButton);
 		
 		JButton checkRecordButton = new JButton("Check My Record");
+		checkRecordButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							CheckRecordGUI frame = new CheckRecordGUI(StudentEntranceGUI.this, sls);
+							frame.setLocationRelativeTo(null);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
 		panel.add(checkRecordButton);
 		
 		JLabel queryLabel = new JLabel("What would you like to do?");

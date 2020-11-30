@@ -1,33 +1,31 @@
 package gui.student;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import connector.StudentLoginSession;
-import entity.Exam;
-
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.util.ArrayList;
-
 import javax.swing.JTable;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
-import util.StudentUtil;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import util.StudentUtil;
+import entity.Exam;
+import java.util.ArrayList;
+import connector.StudentLoginSession;
+
 public class SitExamGUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable examTable;
 	

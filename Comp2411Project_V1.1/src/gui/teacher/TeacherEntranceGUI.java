@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Font;
@@ -64,6 +65,7 @@ public class TeacherEntranceGUI extends JFrame {
 					public void run() {
 						try {
 							ScheExamGUI frame = new ScheExamGUI(TeacherEntranceGUI.this, tls);
+							frame.setLocationRelativeTo(null);
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -76,9 +78,31 @@ public class TeacherEntranceGUI extends JFrame {
 		panel.add(newExamButton);
 		
 		JButton markPaperButton = new JButton("Mark Papers");
+		markPaperButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							MarkPaperGUI frame = new MarkPaperGUI(TeacherEntranceGUI.this, tls);
+							frame.setLocationRelativeTo(null);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
 		panel.add(markPaperButton);
 		
 		JButton checkRecordButton = new JButton("Check Records");
+		checkRecordButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(new JPanel(), "This functionality will be added soon...");
+			}
+		});
 		panel.add(checkRecordButton);
 		
 		JLabel queryLabel = new JLabel("What would you like to do?");

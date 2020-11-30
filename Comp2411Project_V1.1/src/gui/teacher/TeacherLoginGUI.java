@@ -106,6 +106,7 @@ public class TeacherLoginGUI extends JFrame {
 						public void run() {
 							try {
 								TeacherEntranceGUI frame = new TeacherEntranceGUI(tls);
+								frame.setLocationRelativeTo(null);
 								frame.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();
