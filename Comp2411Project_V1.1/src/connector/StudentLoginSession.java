@@ -64,6 +64,8 @@ public class StudentLoginSession
 			System.err.println("Transparent Region is reached!");
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 	
@@ -206,6 +208,31 @@ public class StudentLoginSession
 			System.err.println("Transparent Region is reached!");
 			e.printStackTrace();
 			
+			return null;
+		}
+	}
+	
+	public ArrayList<SemesterRecord> getSemeterRecords(Semester sem){
+		try {
+			ArrayList<SemesterRecord> result = new ArrayList<SemesterRecord>();
+			
+			String query = "select s_name, s_id, sub_id, grade, e_start from sits natural join student natural join exam_sche natural join sets where s_id = ?";
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, this.student.sid);
+
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				LocalDateTime start = LocalDateTime.parse(rs.getTimestamp(5).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
+				if (sem.isInSemester(start)) result.add(new SemesterRecord(new Student(rs.getString(2), rs.getString(1),null),
+						new Subject(rs.getString(3)),
+						rs.getInt(4)));
+				else continue;
+			}
+			
+			return result;
+		}catch(SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

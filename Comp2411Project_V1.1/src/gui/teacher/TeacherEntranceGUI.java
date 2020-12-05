@@ -100,7 +100,19 @@ public class TeacherEntranceGUI extends JFrame {
 		JButton checkRecordButton = new JButton("Check Records");
 		checkRecordButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(new JPanel(), "This functionality will be added soon...");
+//				JOptionPane.showMessageDialog(new JPanel(), "This functionality will be added soon...");
+				setVisible(false);
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							CheckRecordGUI frame = new CheckRecordGUI(TeacherEntranceGUI.this, tls);
+							frame.setLocationRelativeTo(null);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		});
 		panel.add(checkRecordButton);

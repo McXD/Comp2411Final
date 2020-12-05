@@ -69,11 +69,11 @@ public class MainGUI extends JFrame {
 			}
 		});
 		teacherLoginButton.setFont(new Font("Arial", Font.PLAIN, 13));
-		teacherLoginButton.setBounds(131, 125, 151, 23);
+		teacherLoginButton.setBounds(143, 125, 151, 23);
 		contentPane.add(teacherLoginButton);
 		
-		JLabel welcomeLabel = new JLabel("Automated Examnination System");
-		welcomeLabel.setBounds(81, 46, 270, 21);
+		JLabel welcomeLabel =  new JLabel("Automated Examnination System");
+		welcomeLabel.setBounds(84, 46, 270, 21);
 		welcomeLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 14));
 		contentPane.add(welcomeLabel);
 		
@@ -96,7 +96,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 		studentLoginButton.setFont(new Font("Arial", Font.PLAIN, 13));
-		studentLoginButton.setBounds(131, 170, 151, 23);
+		studentLoginButton.setBounds(143, 170, 151, 23);
 		contentPane.add(studentLoginButton);
 	}
 }

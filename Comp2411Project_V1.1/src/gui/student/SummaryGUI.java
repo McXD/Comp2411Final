@@ -1,4 +1,4 @@
-package gui.teacher;
+package gui.student;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -8,33 +8,30 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import connector.TeacherLoginSession;
-import entity.Exam;
-import util.TeacherUtil;
+import connector.StudentLoginSession;
+import entity.Semester;
+import util.StudentUtil;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.JTextField;
 import java.awt.Font;
-import java.util.ArrayList;
-
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class CheckRecordGUI extends JFrame {
+public class SummaryGUI extends JFrame {
 
 	private JPanel contentPane;
-
-	private JFrame parent;
-	private TeacherLoginSession tls;
-	private int selected = -1;
-	private ArrayList<Exam> exams;
 	
+	private JFrame parent;
+	private StudentLoginSession sls;
+	private int selected = -1;
+	private ArrayList<Semester> sems;
 	/**
 	 * Launch the application.
 	 */
@@ -42,7 +39,7 @@ public class CheckRecordGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CheckRecordGUI frame = new CheckRecordGUI(null,null);
+					SummaryGUI frame = new SummaryGUI(null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +51,10 @@ public class CheckRecordGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CheckRecordGUI(JFrame parent, TeacherLoginSession tls) {
+	public SummaryGUI(JFrame parent, StudentLoginSession sls) {
+		this.parent = parent;
+		this.sls = sls;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 585, 505);
 		contentPane = new JPanel();
@@ -62,20 +62,19 @@ public class CheckRecordGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel titleLabel = new JLabel("Finished Exams");
-		titleLabel.setBounds(158, 11, 257, 37);
-		titleLabel.setFont(new Font("Arial Black", Font.BOLD, 26));
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPane.add(titleLabel);
+		JLabel infoLabel = new JLabel("Choose A Sememster");
+		infoLabel.setFont(new Font("Arial Black", Font.PLAIN, 26));
+		infoLabel.setBounds(133, 69, 306, 58);
+		contentPane.add(infoLabel);
 		
 		JButton checkButton = new JButton("Check");
 		checkButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							setVisible(false);
-							ReportGUI frame = new ReportGUI(CheckRecordGUI.this,tls,exams.get(selected));
+							RecordGUI frame = new RecordGUI(SummaryGUI.this, sls, sems.get(selected));
 							frame.setLocationRelativeTo(null);
 							frame.setVisible(true);
 						} catch (Exception e) {
@@ -99,31 +98,32 @@ public class CheckRecordGUI extends JFrame {
 		exitButton.setBounds(10, 436, 89, 23);
 		contentPane.add(exitButton);
 		
-		DefaultListModel<String> listModel = new DefaultListModel<String>();
-		exams = tls.getAllExam();
-		int count = 0;
-		for (Exam e:exams) {
-			listModel.add(count++, TeacherUtil.getExamInfoForTeacher(e));
-		}
 		
-		JList<String> examList = new JList<String>(listModel);
-		examList.setSelectedIndex(-1);
-		examList.addListSelectionListener(new ListSelectionListener() {
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
+		int ptr = 0;
+		sems = StudentUtil.getAvailableSememsters();
+		for (Semester s: sems) {
+			listModel.add(ptr++, s.name());
+		}
+			
+		JList<String> semesterList = new JList<String>(listModel);
+		semesterList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
-				if (examList.getSelectedIndex() == -1) {
+				if (semesterList.getSelectedIndex() == -1) {
 					checkButton.setEnabled(false);
 				}else {
 					checkButton.setEnabled(true);
-					selected = examList.getSelectedIndex();
+					selected = semesterList.getSelectedIndex();
 				}
 			}
 		});
-		examList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		examList.setBounds(0, 0, 1, 1);
-		contentPane.add(examList);
+		semesterList.setBounds(0, 0, 1, 1);
+		contentPane.add(semesterList);
 		
-		JScrollPane scrollPane = new JScrollPane(examList);
-		scrollPane.setBounds(136, 59, 300, 350);
+		JScrollPane scrollPane = new JScrollPane(semesterList);
+		scrollPane.setBounds(192, 147, 188, 250);
 		contentPane.add(scrollPane);
+	
 	}
+
 }

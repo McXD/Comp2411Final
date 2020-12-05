@@ -37,7 +37,8 @@ public class StudentUtil {
 		}
 		System.out.println("mcGrade = " + mcGrade);
 		System.out.println("fbGrade = " + fbGrade);
-		return mcGrade + fbGrade;	
+		int temp = mcGrade + fbGrade;
+		return temp>100 ? 100 : temp;	
 	}
 	
 	public static AnswerSheet sitExam(Student student, Exam exam) {
@@ -137,5 +138,52 @@ public class StudentUtil {
 		}
 		
 		return result;
+	}
+	
+	public static ArrayList<Semester> getAvailableSememsters() {
+		ArrayList<Semester> result= new ArrayList<Semester>();
+		LocalDateTime now = LocalDateTime.now();
+		Semester cur = Semester.inSemester(now);
+		for(Semester s : Semester.values()) {
+			if (s.ordinal() <= cur.ordinal()) {
+				result.add(s);
+			}
+		}
+		return result;
+	}
+	
+	public static Object[][] semeterRecord2Table(ArrayList<SemesterRecord> records) {
+		Object[][] result = new Object[records.size()][];
+		int i = 0;
+		for (SemesterRecord r : records) {
+			result[i++] = new Object[]{r.subject.sub_id, r.grade, CommonUtil.convertGrade(r.grade)};
+		}
+		return result;
+	}
+	
+	public static String summarize(ArrayList<SemesterRecord> records) {
+		if (records.size() == 0) return "No record found";
+		
+		records.sort(new Comparator<SemesterRecord>() {
+			@Override
+			public int compare(SemesterRecord arg0, SemesterRecord arg1) {
+				return arg0.grade - arg1.grade;
+			}
+		});
+		
+		int avg = 0;
+		for (SemesterRecord s : records) {
+			avg += s.grade;
+		}
+		avg /= records.size();
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Best: " + records.get(0).grade + "\n");
+		sb.append("Poorest: " + records.get(records.size()-1).grade + "\n");
+		sb.append("Average: " + avg + "\n");
+		sb.append("Median: " + records.get((records.size()-1)/2).grade + "\n");
+		
+		return sb.toString();
 	}
 }

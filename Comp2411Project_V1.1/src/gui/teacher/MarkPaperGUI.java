@@ -131,9 +131,15 @@ public class MarkPaperGUI extends JFrame {
 		exitButton.setBounds(10, 436, 89, 23);
 		contentPane.add(exitButton);
 		
+		JLabel titleLabel = new JLabel(String.format("%8s %8s %15s", "Exam ID", "Class", "Subject"));
+		titleLabel.setBounds(135, 185, 303, 14);
+		contentPane.add(titleLabel);
+		
 		if (ptr == 0) {
+			titleLabel.setVisible(false);
 			horrayLabel.setVisible(true);
 			examList.setVisible(false);
+			scrollPane.setVisible(false);
 		}else {
 			horrayLabel.setVisible(false);
 			examList.setSelectedIndex(0);

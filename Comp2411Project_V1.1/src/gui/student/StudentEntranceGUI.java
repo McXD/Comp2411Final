@@ -57,7 +57,7 @@ public class StudentEntranceGUI extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBounds(152, 159, 268, 151);
 		contentPane.add(panel);
-		panel.setLayout(new GridLayout(2, 0, 2, 2));
+		panel.setLayout(new GridLayout(3, 0, 2, 2));
 		
 		JButton sitExamButton = new JButton("Sit An Exam");
 		sitExamButton.addActionListener(new ActionListener() {
@@ -100,6 +100,25 @@ public class StudentEntranceGUI extends JFrame {
 			}
 		});
 		panel.add(checkRecordButton);
+		
+		JButton summaryButton = new JButton("Summary");
+		summaryButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							SummaryGUI frame = new SummaryGUI(StudentEntranceGUI.this, sls);
+							frame.setLocationRelativeTo(null);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
+		panel.add(summaryButton);
 		
 		JLabel queryLabel = new JLabel("What would you like to do?");
 		queryLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 25));

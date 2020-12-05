@@ -67,6 +67,9 @@ public class DesignPaperGUI extends JFrame {
 	private boolean mcOptional = false;
 	private boolean fbOptional = false;
 	private boolean flOptional = false;
+	
+	int mandtot = 0, optot = 0;
+	JLabel totalPointLabel;
 
 	/**
 	 * Create the frame.
@@ -78,13 +81,17 @@ public class DesignPaperGUI extends JFrame {
 		
 		/*Main Panel*/
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 585, 505);
+		setBounds(100, 100, 585, 520);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		/*Tabbed Pane*/
+		
+		totalPointLabel = new JLabel("Mandatory: 0          Optional: 0");
+		totalPointLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPane.add(totalPointLabel, BorderLayout.NORTH);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
@@ -262,9 +269,17 @@ public class DesignPaperGUI extends JFrame {
 						tempOptionDText.isBlank() || tempPointText.isBlank() || tempAnswer.isEmpty()) {
 					JOptionPane.showMessageDialog(new JPanel(), "You haven't finshed the design of this question yet"
 							, "Unfinisded Question",JOptionPane.WARNING_MESSAGE);
-				}else {
+				}else if (!mcOptional && mandtot + Integer.parseInt(tempPointText) > 100){
+					JOptionPane.showMessageDialog(new JPanel(), "total point of mandatory questions exceeds 100"
+							, "Warning",JOptionPane.WARNING_MESSAGE);
+				}	
+				else {
+					int point = Integer.parseInt(tempPointText);
 					paper.addMc(tempQuestionText, tempOptionAText, tempOptionBText,
-							tempOptionCText, tempOptionDText, tempAnswer, Integer.parseInt(tempPointText), mcOptional);
+							tempOptionCText, tempOptionDText, tempAnswer, point, mcOptional);
+					if (mcOptional) optot += point;
+					else mandtot += point;
+					totalPointLabel.setText("Mandatory: " + mandtot + "          Optional: " + optot);
 					mcQuestionTextArea.setText("Question goes here...");
 					optionAText.setText("Option A");
 					optionBText.setText("Option B");
@@ -275,7 +290,6 @@ public class DesignPaperGUI extends JFrame {
 					mcOptional = false;
 					pointTextField.setText("");
 					answer = "";
-					
 				}
 				
 			}
@@ -371,8 +385,17 @@ public class DesignPaperGUI extends JFrame {
 				if (tempQuestionText.isBlank() || tempAnswerText.isBlank() || tempPointText.isEmpty()) {
 					JOptionPane.showMessageDialog(new JPanel(), "You haven't finshed the design of this question yet"
 							, "Unfinisded Question",JOptionPane.WARNING_MESSAGE);
-				}else {
-					paper.addFb(tempQuestionText, tempAnswerText, Integer.parseInt(tempPointText), fbOptional);
+				}else if (!fbOptional && mandtot + Integer.parseInt(tempPointText) > 100){
+					JOptionPane.showMessageDialog(new JPanel(), "total point exceeds 100"
+							, "Warning",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int point = Integer.parseInt(tempPointText);
+					paper.addFb(tempQuestionText, tempAnswerText, point, fbOptional);
+					
+					if (fbOptional) optot += point;
+					else mandtot += point;
+					totalPointLabel.setText("Mandatory: " + mandtot + "          Optional: " + optot);
 					
 					fbTextArea.setText("Question goes here...");
 					fbAnswerTextArea.setText("Answer goes here...");
@@ -441,8 +464,17 @@ public class DesignPaperGUI extends JFrame {
 				if (tempQuestionText.isBlank() || tempPointText.isEmpty()) {
 					JOptionPane.showMessageDialog(new JPanel(), "You haven't finshed the design of this question yet"
 							, "Unfinisded Question",JOptionPane.WARNING_MESSAGE);
+				}else if (!flOptional && mandtot + Integer.parseInt(tempPointText) > 100){
+					JOptionPane.showMessageDialog(new JPanel(), "total point exceeds 100"
+							, "Warning",JOptionPane.WARNING_MESSAGE);
 				}else {
-					paper.addFl(tempQuestionText, Integer.parseInt(tempPointText), fbOptional);
+					int point = Integer.parseInt(tempPointText);
+					paper.addFl(tempQuestionText, point, fbOptional);
+					
+					if (flOptional) optot += point;
+					else mandtot += point;
+					totalPointLabel.setText("Mandatory: " + mandtot + "          Optional: " + optot);
+					
 					
 					flTextArea.setText("Question goes here...");
 					flPointTextField.setText("");
@@ -464,6 +496,13 @@ public class DesignPaperGUI extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			
+			if (mandtot != 100) {
+				JOptionPane.showMessageDialog(new JPanel(), "total point of mandatory questions not reaches 100"
+						, "Warning",JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
 			Object[] options = {"Yes", "No"};
 			
 			int choice = JOptionPane.showOptionDialog(new JPanel(), TeacherUtil.summarizePaper(paper) + "\nSure to quit?",

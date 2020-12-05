@@ -149,6 +149,7 @@ public class ScheExamGUI extends JFrame {
 						public void run() {
 							try {
 								DesignPaperGUI frame = new DesignPaperGUI(tls, exam);
+								frame.setLocationRelativeTo(null);
 								frame.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();

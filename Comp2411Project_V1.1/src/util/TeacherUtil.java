@@ -184,5 +184,18 @@ public class TeacherUtil {
 		return "good";
 	}
 	
+	public static Object[][] record2Table(ArrayList<ExamResultRecord> records){
+		Object[][] result = new Object[records.size()][];
+		int ptr = 0;
+		for (ExamResultRecord e : records) {
+			result[ptr++] = new String[] {
+					e.student.sid,
+					e.student.name,
+					e.grade + "",
+					CommonUtil.convertGrade(e.grade)
+			};
+		}
+		return result;
+	}
 	
 }

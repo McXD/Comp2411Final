@@ -5,6 +5,7 @@ import entity.question.*;
 import exception.IdentityException;
 
 import java.util.ArrayList;
+import java.io.PipedInputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -175,12 +176,23 @@ public class TeacherLoginSession {
 	public void grade(AnswerSheet ash, int grade, String feedback){
 		try {
 			System.out.println("In grade()");
-			PreparedStatement pst = con.prepareStatement("UPDATE SITS SET grade = grade + ?, feedback = ? WHERE e_id = ? and t_id = ? and s_id = ?");
 			String eid = ash.ofExam.eid;
 			String tid = ash.ofExam.creator.tid;
 			String sid = ash.owner.sid;
+			
+			PreparedStatement pst = con.prepareStatement("UPDATE SITS SET grade = ?, feedback = ? WHERE e_id = ? and t_id = ? and s_id = ?");
+			
+			PreparedStatement pst0 = con.prepareStatement("Select grade from sits where e_id = ? and t_id = ? and s_id = ?");
+			pst0.setString(1, eid);
+			pst0.setString(2, tid);
+			pst0.setString(3, sid);
+			
+			ResultSet rs0 = pst0.executeQuery();
+			rs0.next();
+			int grade0 = rs0.getInt(1);
+			
 			System.out.println(eid + " " + tid + " " + sid);
-			pst.setInt(1, grade);
+			pst.setInt(1, grade0 + grade > 100 ? 100 : grade0 + grade);
 			pst.setString(2, feedback);
 			pst.setString(3, eid);
 			pst.setString(4, tid);
@@ -304,6 +316,27 @@ public class TeacherLoginSession {
 			System.err.println("Transparent Region is reached!");
 			e.printStackTrace();
 			
+			return null;
+		}
+	}
+	
+	public ArrayList<ExamResultRecord> getRecordForExam(Exam exam){
+		try {
+			String query = "select e_id,s_id, s_name, c_id,grade from sits natural join student natural join member_of where t_id = ? and e_id = ?";
+			PreparedStatement pst = con.prepareStatement(query);
+			
+			pst.setString(1, exam.creator.tid);
+			pst.setString(2, exam.eid);
+			ResultSet rs = pst.executeQuery();
+			
+			ArrayList<ExamResultRecord> result = new ArrayList<ExamResultRecord>();
+			while(rs.next()) {
+				result.add(new ExamResultRecord(rs.getString(1),new Student(rs.getString(2),rs.getString(3),new Class0(rs.getString(4))),rs.getInt(5)));
+			}
+			
+			return result;
+		}catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
