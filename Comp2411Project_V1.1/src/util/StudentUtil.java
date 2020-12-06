@@ -156,7 +156,7 @@ public class StudentUtil {
 		Object[][] result = new Object[records.size()][];
 		int i = 0;
 		for (SemesterRecord r : records) {
-			result[i++] = new Object[]{r.subject.sub_id, r.grade, CommonUtil.convertGrade(r.grade)};
+			result[i++] = new Object[]{r.subject.sub_id, r.grade, CommonUtil.convertGrade(r.grade), r.feedback};
 		}
 		return result;
 	}

@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -18,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import connector.StudentLoginSession;
 import entity.Semester;
 import entity.SemesterRecord;
+import util.CommonUtil;
 import util.StudentUtil;
 
 public class RecordGUI extends JFrame {
@@ -57,7 +60,7 @@ public class RecordGUI extends JFrame {
 		titleLabel.setFont(new Font("Arial Black", Font.BOLD, 26));
 		contentPane.add(titleLabel);
 		
-		String[] colNames = {"Subject", "Grade", "Letter Grade"};
+		String[] colNames = {"Subject", "Grade", "Letter Grade", "Feedback"};
 		ArrayList<SemesterRecord> records = sls.getSemeterRecords(sem);
 		Object[][] content = StudentUtil.semeterRecord2Table(records);
 		
@@ -87,5 +90,28 @@ public class RecordGUI extends JFrame {
 		});
 		exitButton.setBounds(10, 436, 89, 23);
 		contentPane.add(exitButton);
+		
+		JButton printButton = new JButton("Print");
+		printButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					FileWriter csvWriter = new FileWriter(sls.getStudent().name + "_" + sem.name()+".csv");
+					
+					csvWriter.append(String.format("%s,%s,%s,%s\n", "Subject", "Grade", "Letter Grade", "Feedback"));
+					for (SemesterRecord s : records) {
+						csvWriter.append(String.format("%s,%d,%s,%s\n", s.subject, s.grade, CommonUtil.convertGrade(s.grade),s.feedback));
+					}
+					csvWriter.flush();
+					csvWriter.close();
+					
+					JOptionPane.showMessageDialog(new JPanel(), "Record printed");
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(new JPanel(), "Unexpected IO Error\n"+e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
+				}
+			}
+		});
+		printButton.setBounds(474, 436, 89, 23);
+		contentPane.add(printButton);
 	}
 }
