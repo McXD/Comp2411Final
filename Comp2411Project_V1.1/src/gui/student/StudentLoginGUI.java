@@ -53,14 +53,14 @@ public class StudentLoginGUI extends JFrame {
 	 */
 	public StudentLoginGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 585, 505);
+		setBounds(100, 100, 421, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 200, 400, 80);
+		panel.setBounds(-87, 90, 400, 80);
 		contentPane.add(panel);
 		panel.setLayout(new GridLayout(2, 2, 0, 0));
 		
@@ -79,14 +79,23 @@ public class StudentLoginGUI extends JFrame {
 		PWTextField = new JPasswordField();
 		panel.add(PWTextField);
 		
-		JLabel loginLabel = new JLabel("Welcome Student");
+		JLabel loginLabel = new JLabel("Welcome, Student");
 		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		loginLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 23));
-		loginLabel.setBounds(151, 107, 258, 82);
+		loginLabel.setBounds(75, 21, 258, 82);
 		contentPane.add(loginLabel);
 		
+		JButton exitButton = new JButton("Exit");
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		exitButton.setBounds(10, 201, 89, 23);
+		contentPane.add(exitButton);
+		
 		JButton loginButton = new JButton("Login");
-		loginButton.setBounds(355, 316, 89, 23);
+		loginButton.setBounds(310, 201, 89, 23);
 		loginButton.setMnemonic(KeyEvent.VK_ENTER);
 		contentPane.add(loginButton);
 		
@@ -96,6 +105,7 @@ public class StudentLoginGUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//fetch the ID and PW
 				String inputID = IDTextField.getText();
+				@SuppressWarnings("deprecation")
 				String inputPW = PWTextField.getText();
 				
 				if (!checkIndentity(inputID, inputPW)) {
@@ -126,6 +136,7 @@ public class StudentLoginGUI extends JFrame {
 			tls = new StudentLoginSession(id, pw);
 			return true;
 		}catch(Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

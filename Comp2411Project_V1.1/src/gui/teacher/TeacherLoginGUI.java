@@ -1,26 +1,23 @@
 package gui.teacher;
 
-import util.TeacherUtil;
-import connector.TeacherLoginSession;
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
+
+import connector.TeacherLoginSession;
 
 
 public class TeacherLoginGUI extends JFrame {
@@ -52,14 +49,14 @@ public class TeacherLoginGUI extends JFrame {
 	 */
 	public TeacherLoginGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 585, 505);
+		setBounds(100, 100, 421, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 200, 400, 80);
+		panel.setBounds(-87, 90, 400, 80);
 		contentPane.add(panel);
 		panel.setLayout(new GridLayout(2, 2, 0, 0));
 		
@@ -78,16 +75,25 @@ public class TeacherLoginGUI extends JFrame {
 		PWTextField = new JPasswordField();
 		panel.add(PWTextField);
 		
-		JLabel loginLabel = new JLabel("Welcome Teacher");
+		JLabel loginLabel = new JLabel("Welcome, Teacher");
 		loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		loginLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 23));
-		loginLabel.setBounds(151, 107, 258, 82);
+		loginLabel.setBounds(75, 21, 258, 82);
 		contentPane.add(loginLabel);
 		
 		JButton loginButton = new JButton("Login");
-		loginButton.setBounds(355, 316, 89, 23);
+		loginButton.setBounds(310, 201, 89, 23);
 		loginButton.setMnemonic(KeyEvent.VK_ENTER);
 		contentPane.add(loginButton);
+		
+		JButton exitButton = new JButton("Exit");
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		exitButton.setBounds(10, 201, 89, 23);
+		contentPane.add(exitButton);
 		
 		loginButton.addActionListener(new ActionListener() {
 
@@ -95,6 +101,7 @@ public class TeacherLoginGUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//fetch the ID and PW
 				String inputID = IDTextField.getText();
+				@SuppressWarnings("deprecation")
 				String inputPW = PWTextField.getText();
 				
 				if (!checkIndentity(inputID, inputPW)) {

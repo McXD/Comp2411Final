@@ -36,7 +36,7 @@ public class Administration {
 	}
 	
 	public void archive() throws SQLException, IOException{
-		FileWriter csvWriter = new FileWriter("C:\\Users\\fyl15\\onedrive\\desktop\\archive.csv",true);
+		FileWriter csvWriter = new FileWriter("archive.csv",true);
 		
 		PreparedStatement loop1 = con.prepareStatement("select s_id, t_id, e_id, e_start "
 				+ "from sits s natural join exam_sche");

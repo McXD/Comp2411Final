@@ -1,26 +1,32 @@
 package gui.teacher;
-import connector.TeacherLoginSession;
-import util.TeacherUtil;
-import entity.*;
-
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.GridLayout;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.awt.event.ActionEvent;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import connector.TeacherLoginSession;
+import entity.Class0;
+import entity.Exam;
+import entity.ExamInfo;
+import entity.Paper;
+import entity.Semester;
+import entity.Subject;
+import util.TeacherUtil;
 
 public class ScheExamGUI extends JFrame {
 	private TeacherLoginSession tls;
@@ -65,11 +71,11 @@ public class ScheExamGUI extends JFrame {
 		
 		JLabel examInfoLabel = new JLabel("Exam Information");
 		examInfoLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 30));
-		examInfoLabel.setBounds(126, 104, 320, 58);
+		examInfoLabel.setBounds(126, 63, 320, 58);
 		contentPane.add(examInfoLabel);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(113, 198, 294, 152);
+		panel.setBounds(139, 148, 294, 152);
 		contentPane.add(panel);
 		panel.setLayout(new GridLayout(6, 2, 2, 2));
 		
@@ -140,14 +146,29 @@ public class ScheExamGUI extends JFrame {
 					
 					//check authority
 					if (!TeacherUtil.checkAuthority(tls.getTeacher(), exam.forClass, exam.onSubject)) {
-						throw new Exception(tls.getTeacher().toString() + "You do not have authority to set this exam\n" + exam.toString());
+						throw new Exception("You do not have authority to set this exam\n");
 					}
 					
+					//check duplicity
+					ExamInfo toSet = new ExamInfo(tls.getTeacher().tid, classText.getText(),
+										subjectText.getText(), LocalDateTime.parse(startText.getText(), DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm:ss a")),
+												examIDText.getText());
+					ArrayList<ExamInfo> already = tls.getExmInfo();
+					int sig = TeacherUtil.checkDuplicity(already, toSet);
+					if (sig == 1) {
+						throw new Exception("Duplicated Exam ID");
+					}else if (sig == 2) {
+						throw new Exception(String.format("You have already set an exam\n for class %s on subject %s in sememster %s",
+																classText.getText(), subjectText.getText(),
+																Semester.inSemester(LocalDateTime.parse(startText.getText(), DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm:ss a"))).name()));
+					}
+					
+										
 					//call DesignPaperGUI
-					setVisible(false);
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
+								setVisible(false);
 								DesignPaperGUI frame = new DesignPaperGUI(tls, exam);
 								frame.setLocationRelativeTo(null);
 								frame.setVisible(true);
@@ -157,8 +178,9 @@ public class ScheExamGUI extends JFrame {
 						}
 					});
 					
-					dispose();
-					parent.setVisible(true);
+				}catch(DateTimeParseException | ParseException pe) {
+					JOptionPane.showMessageDialog(new JPanel(), "Wrong input format\n"+pe.getMessage(),
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}catch(Exception e) {
 					JOptionPane.showMessageDialog(new JPanel(), e.getMessage(),
 							"Error", JOptionPane.ERROR_MESSAGE);
@@ -170,6 +192,20 @@ public class ScheExamGUI extends JFrame {
 		});
 		designPaperButton.setBounds(445, 427, 118, 32);
 		contentPane.add(designPaperButton);
+		
+		JLabel lblNewLabel = new JLabel("(Input start time should be like 01-Dec-2020 12:00:00 AM)");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(76, 335, 421, 14);
+		contentPane.add(lblNewLabel);
+		
+		JButton exitButton = new JButton("Exit");
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				parent.setVisible(true);
+			}
+		});
+		exitButton.setBounds(10, 427, 118, 32);
+		contentPane.add(exitButton);
 	}
-
 }

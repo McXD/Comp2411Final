@@ -115,19 +115,19 @@ public class StudentUtil {
 	}
 	
 	public static boolean canSitNow(LocalDateTime examTime) {
-//		LocalDateTime now = LocalDateTime.now();
-//		
-//		if (now.getYear() == examTime.getYear()) {
-//			if (now.getMonth() == examTime.getMonth()) {
-//				if (now.getHour() == examTime.getHour()) {
-//					if (now.getMinute()-examTime.getMinute() < 5 && now.getMinute() - examTime.getMinute() > -5) {
-//						return true;
-//					}
-//				}
-//			}
-//		}
+		LocalDateTime now = LocalDateTime.now();
 		
-		return true;
+		if (now.getYear() == examTime.getYear()) {
+			if (now.getMonth() == examTime.getMonth()) {
+				if (now.getHour() == examTime.getHour()) {
+					if (now.getMinute()-examTime.getMinute() < 5 && now.getMinute() - examTime.getMinute() > -5) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	public static Object[][] getRecordTable(ArrayList<StudentRecord> records){

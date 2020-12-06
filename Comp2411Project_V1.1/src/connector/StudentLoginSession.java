@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import oracle.jdbc.driver.*;
 import exception.IdentityException;
 
+/**
+ * Connect to database as a student
+ * @author Feng
+ *
+ */
 public class StudentLoginSession
 {
 	private Student student;
@@ -29,10 +34,11 @@ public class StudentLoginSession
 			OracleConnection conn = (OracleConnection)DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", username, password);
 			
 			//Fetch student id and pw
-			Statement st = conn.createStatement();
-			String query = "SELECT s_name, s_pw FROM student where s_id = '" + sid + "'";
+			String query = "SELECT s_name, s_pw FROM student where s_id = ?";
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, sid);
 
-			ResultSet rs = st.executeQuery(query);
+			ResultSet rs = pst.executeQuery();
 			if (!rs.next()) {
 				throw new IdentityException("StudentID not found");
 			}else {
@@ -45,8 +51,10 @@ public class StudentLoginSession
 				String name = rs.getString("s_name");
 				
 				//read the class the student belongs to
-				query = "SELECT c_id FROM student NATURAL JOIN MEMBER_OF where s_id = '" + sid + "'";
-				rs = st.executeQuery(query);
+				query = "SELECT c_id FROM student NATURAL JOIN MEMBER_OF where s_id = ?";
+				pst = conn.prepareStatement(query);
+				pst.setString(1, sid);
+				rs = pst.executeQuery();
 				rs.next();
 				String cid = rs.getString("c_id");
 				Class0 clas = new Class0(cid);
@@ -56,12 +64,7 @@ public class StudentLoginSession
 				con.setAutoCommit(false);
 			}
 		} catch (SQLException e) {
-			//This region should not be reached
-			
-			//For debugging
-			System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.err.println("WARNING");
-			System.err.println("Transparent Region is reached!");
+			System.err.println("An error occured when trying to connect to DB");
 			e.printStackTrace();
 		}
 		
@@ -91,12 +94,7 @@ public class StudentLoginSession
 			
 			con.commit();
 		} catch (SQLException e) {
-			//This region should not be reached
-			
-			//For debugging
-			System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.err.println("WARNING");
-			System.err.println("Transparent Region is reached!");
+			//This exception should not be triggered
 			e.printStackTrace();
 		} 
 	}
@@ -118,12 +116,7 @@ public class StudentLoginSession
 			
 			return result;
 		} catch (SQLException e) {
-			//This region should not be reached
-			
-			//For debugging
-			System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.err.println("WARNING");
-			System.err.println("Transparent Region is reached!");
+			//This exception should not be triggered
 			e.printStackTrace();
 			return null;
 		}
@@ -200,14 +193,8 @@ public class StudentLoginSession
 			
 			return result;
 		}catch(SQLException e) {
-			//This region should not be reached
-			
-			//For debugging
-			System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.err.println("WARNING");
-			System.err.println("Transparent Region is reached!");
+			//This exception should not be triggered
 			e.printStackTrace();
-			
 			return null;
 		}
 	}

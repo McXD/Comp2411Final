@@ -5,7 +5,6 @@ import entity.question.*;
 import exception.IdentityException;
 
 import java.util.ArrayList;
-import java.io.PipedInputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -64,12 +63,7 @@ public class TeacherLoginSession {
 				con.setAutoCommit(false);
 			}
 		} catch (SQLException e) {
-			//This region should not be reached
-			
-			//For debugging
-			System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.err.println("WARNING");
-			System.err.println("Transparent Region is reached!");
+			//never reached
 			e.printStackTrace();
 		}
 	}
@@ -308,14 +302,8 @@ public class TeacherLoginSession {
 			
 			return result;
 		}catch(SQLException e) {
-			//This region should not be reached
-			
-			//For debugging
-			System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.err.println("WARNING");
-			System.err.println("Transparent Region is reached!");
+			//never reached
 			e.printStackTrace();
-			
 			return null;
 		}
 	}
@@ -336,6 +324,30 @@ public class TeacherLoginSession {
 			
 			return result;
 		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ArrayList<ExamInfo> getExmInfo(){
+		try {
+			String query = "select t_id, c_id, sub_id, e_start, e_id from exam_sche natural join sets where t_id = ?";
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, teacher.tid);
+			
+			ArrayList<ExamInfo> result = new ArrayList<ExamInfo>();
+			
+			ResultSet rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				result.add(new ExamInfo(rs.getString(1), rs.getString(2), rs.getString(3), 
+						LocalDateTime.parse(rs.getTimestamp(4).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S")),
+						rs.getString(5)));
+			}
+			
+			return result;
+		}catch(SQLException e) {
+			//never reached
 			e.printStackTrace();
 			return null;
 		}

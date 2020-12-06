@@ -14,6 +14,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
 
 public class MainGUI extends JFrame {
 
@@ -45,39 +46,24 @@ public class MainGUI extends JFrame {
 	 */
 	public MainGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 362, 246);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton teacherLoginButton = new JButton("Teacher Entrance");
-		teacherLoginButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							TeacherLoginGUI frame = new TeacherLoginGUI();
-							frame.setLocationRelativeTo(null);
-							frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-			}
-		});
-		teacherLoginButton.setFont(new Font("Arial", Font.PLAIN, 13));
-		teacherLoginButton.setBounds(143, 125, 151, 23);
-		contentPane.add(teacherLoginButton);
-		
 		JLabel welcomeLabel =  new JLabel("Automated Examnination System");
-		welcomeLabel.setBounds(84, 46, 270, 21);
+		welcomeLabel.setBounds(40, 25, 270, 21);
 		welcomeLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 14));
 		contentPane.add(welcomeLabel);
 		
+		JPanel panel = new JPanel();
+		panel.setBounds(85, 72, 180, 70);
+		contentPane.add(panel);
+		panel.setLayout(new GridLayout(2, 0, 5, 5));
+		
 		JButton studentLoginButton = new JButton("Student Entrance");
+		panel.add(studentLoginButton);
 		studentLoginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
@@ -96,7 +82,34 @@ public class MainGUI extends JFrame {
 			}
 		});
 		studentLoginButton.setFont(new Font("Arial", Font.PLAIN, 13));
-		studentLoginButton.setBounds(143, 170, 151, 23);
-		contentPane.add(studentLoginButton);
+		
+		JButton teacherLoginButton = new JButton("Teacher Entrance");
+		panel.add(teacherLoginButton);
+		teacherLoginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							TeacherLoginGUI frame = new TeacherLoginGUI();
+							frame.setLocationRelativeTo(null);
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
+		teacherLoginButton.setFont(new Font("Arial", Font.PLAIN, 13));
+		
+		JButton exitButton = new JButton("Exit");
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		exitButton.setBounds(10, 177, 69, 23);
+		contentPane.add(exitButton);
 	}
 }

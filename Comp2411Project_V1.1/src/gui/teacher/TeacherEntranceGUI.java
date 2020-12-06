@@ -1,15 +1,12 @@
 package gui.teacher;
 import connector.TeacherLoginSession;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Font;
@@ -43,14 +40,14 @@ public class TeacherEntranceGUI extends JFrame {
 		this.tls = tls;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 585, 505);
+		setBounds(100, 100, 510, 365);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(152, 159, 268, 151);
+		panel.setBounds(115, 116, 268, 151);
 		contentPane.add(panel);
 		panel.setLayout(new GridLayout(3, 1, 2, 2));
 		
@@ -119,7 +116,16 @@ public class TeacherEntranceGUI extends JFrame {
 		
 		JLabel queryLabel = new JLabel("What would you like to do?");
 		queryLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 25));
-		queryLabel.setBounds(84, 53, 405, 39);
+		queryLabel.setBounds(46, 53, 405, 39);
 		contentPane.add(queryLabel);
+		
+		JButton exitButton = new JButton("Exit");
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		exitButton.setBounds(10, 296, 89, 23);
+		contentPane.add(exitButton);
 	}
 }

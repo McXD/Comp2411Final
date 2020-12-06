@@ -2,42 +2,28 @@ package gui.teacher;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import entity.question.FbQuestion;
-import entity.question.FlQuestion;
-import entity.question.McQuestion;
-import entity.question.QuestionFactory;
-import util.TeacherUtil;
-
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
-import javax.swing.JRadioButton;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JScrollBar;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import java.awt.Component;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.Color;
-import entity.question.*;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
-import entity.*;
-import entity.question.*;
 import connector.TeacherLoginSession;
+import entity.Exam;
+import entity.Paper;
+import util.TeacherUtil;
 
 public class DesignPaperGUI extends JFrame {
 

@@ -167,6 +167,18 @@ public class TeacherUtil {
 		return teacher.canSetExam(clas, sub);
 	}
 	
+	public static int checkDuplicity(ArrayList<ExamInfo> already, ExamInfo toSet) {
+		for (ExamInfo i:already) {
+			if (i.eid.compareTo(toSet.eid) == 0) return 1; //duplicated eid
+			
+			if (i.cid.compareTo(toSet.cid) == 0 && i.subid.compareTo(toSet.subid) == 0) {
+				//check if they are in the same semester
+				if (Semester.inSemester(i.start) == Semester.inSemester(toSet.start)) return 2; //double sets
+			}
+		}
+		return 0;
+	}
+	
 	public static ArrayList<Exam> getAllFinishedExams(ArrayList<Exam> exams){
 		ArrayList<Exam> result = new ArrayList<Exam>();
 		LocalDateTime now = LocalDateTime.now();
