@@ -1,0 +1,5 @@
+hostname: localhost
+port: 1521
+sid: orcl
+username: C##feng
+password: fyl200165

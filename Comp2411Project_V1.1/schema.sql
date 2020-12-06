@@ -77,7 +77,7 @@ NOT FINAL;
 /
 
 CREATE TABLE sits
-(s_id CHAR(9) CONSTRAINT fk_sits REFERENCES student(s_id) --cannot delete from student without deleting the records
+(s_id CHAR(9) CONSTRAINT fk_sits REFERENCES student(s_id) 
 ,t_id CHAR(9)
 ,e_id CHAR(4)
 ,answer_sheet answer_sheet_t

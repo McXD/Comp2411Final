@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.DriverManager;
@@ -6,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import oracle.jdbc.driver.OracleConnection;
 
@@ -23,13 +26,27 @@ class Triple{
 public class Administration {
 	private OracleConnection con;
 	
-	public Administration() {
-		String username, password;
-		username = "C##feng";
-		password = "fyl200165";
+	public Administration() throws FileNotFoundException {
 		try {
+			File file = new File("config.txt");
+			Scanner sc = new Scanner(file);
+			String[] info = new String[5];
+			
+			for (int i=0; i<5; i++) {
+				info[i] = sc.nextLine().split(":")[1].trim();
+			}
+			
+			sc.close();
+			
+			String username, password;
+			username = info[3];
+			password = info[4];
+
+			// Connection
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			con = (OracleConnection)DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", username, password);
+			con = (OracleConnection)DriverManager.getConnection(
+				 "jdbc:oracle:thin:@" + info[0] + ":" + info[1] + ":" + info[2],
+				 username, password);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -88,8 +105,45 @@ public class Administration {
 		csvWriter.close();
 	}
 	
-	public static void main(String[] args) throws SQLException, IOException {
-		Administration foo = new Administration();
-		foo.archive();
+	
+	public static void configure() throws IOException {
+		Scanner in = new Scanner(System.in);
+		FileWriter out = new FileWriter("config.txt");
+		
+		System.out.print("hostname: ");
+		out.write("hostname: " + in.nextLine() + "\n");
+		System.out.print("port: " );
+		out.write("port: " + in.nextLine() + "\n");
+		System.out.print("sid: " );
+		out.write("sid: " + in.nextLine() + "\n");
+		System.out.print("username: " );
+		out.write("username: " + in.nextLine() + "\n");
+		System.out.print("password: " );
+		out.write("password: " + in.nextLine() + "\n");
+		
+		in.close();
+		out.close();
+		
+		System.out.println("Configuration succeeded");
 	}
+	
+	public static void main(String[] args) throws SQLException, IOException {
+		System.out.println("Option: 1 to configure, 2 to archive");
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+		
+		int choice = sc.nextInt();
+		switch (choice) {
+		case 1:
+			Administration.configure();
+			break;
+		case 2:
+			Administration ad = new Administration();
+			ad.archive();
+			break;
+		default:
+			System.err.println("Invalid input");
+		}
+	}
+	
 }

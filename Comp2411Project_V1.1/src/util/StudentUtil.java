@@ -186,4 +186,23 @@ public class StudentUtil {
 		
 		return sb.toString();
 	}
+	
+	public static double[] summarize0(ArrayList<SemesterRecord> records) {
+		if (records.size() == 0) return new double[] {0,0,0,0};
+		
+		records.sort(new Comparator<SemesterRecord>() {
+			@Override
+			public int compare(SemesterRecord arg0, SemesterRecord arg1) {
+				return arg0.grade - arg1.grade;
+			}
+		});
+		
+		int avg = 0;
+		for (SemesterRecord s : records) {
+			avg += s.grade;
+		}
+		avg /= records.size();
+		
+		return new double[] {records.get(0).grade, records.get(records.size()-1).grade, avg, records.get((records.size()-1)/2).grade};
+	}
 }

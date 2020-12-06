@@ -1,10 +1,13 @@
 package connector;
 import entity.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import oracle.jdbc.driver.*;
 import exception.IdentityException;
@@ -26,12 +29,27 @@ public class StudentLoginSession
 	public StudentLoginSession(String sid, String pw) throws IdentityException{
 		try {
 			//Connect to Oracle DB
-			String username, password;
-			username = "C##feng";
-			password = "fyl200165";
+			File file = new File("config.txt");
+			Scanner sc = new Scanner(file);
 			
+			String[] info = new String[5];
+			
+			for (int i=0; i<5; i++) {
+				info[i] = sc.nextLine().split(":")[1].trim();
+			}
+			
+			sc.close();
+			
+			String username, password;
+			username = info[3];			// Your Oracle Account ID
+			password = info[4]; 		// Password of Oracle Account
+
+			// Connection
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			OracleConnection conn = (OracleConnection)DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", username, password);
+			OracleConnection conn = 
+				(OracleConnection)DriverManager.getConnection(
+				 "jdbc:oracle:thin:@" + info[0] + ":" + info[1] + ":" + info[2],
+				 username, password);
 			
 			//Fetch student id and pw
 			String query = "SELECT s_name, s_pw FROM student where s_id = ?";
@@ -65,6 +83,8 @@ public class StudentLoginSession
 			}
 		} catch (SQLException e) {
 			System.err.println("An error occured when trying to connect to DB");
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
