@@ -65,7 +65,7 @@ CREATE TABLE sets
 ,sub_id VARCHAR2(10) CONSTRAINT fk_sets_2 REFERENCES subject(sub_id) ON DELETE CASCADE
 , CONSTRAINT fk_sets_3 FOREIGN KEY (t_id, e_id) REFERENCES exam_sche(t_id, e_id) ON DELETE CASCADE
 , CONSTRAINT fk_sets_4 FOREIGN KEY (t_id, c_id, sub_id) REFERENCES teaches(t_id, c_id, sub_id) ON DELETE CASCADE
-, CONSTRAINT pk_sets PRIMARY KEY (t_id, c_id));
+, CONSTRAINT pk_sets PRIMARY KEY (t_id, e_id));
 
 
 
@@ -84,8 +84,8 @@ NOT FINAL;
     else:
         check if the student is still active
         if not:
+            archive
             delete
-            delete from student table
         else:
             do not delete
 */
