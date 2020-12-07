@@ -98,7 +98,9 @@ public class SummaryGUI extends JFrame {
 		
 		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		int ptr = 0;
-		sems = StudentUtil.getAvailableSememsters();
+		
+		int startYear = Integer.parseInt(sls.getStudent().memberOf.cid.substring(0, 2)) + 2000;
+		sems = StudentUtil.getAvailableSememsters(startYear);
 		for (Semester s: sems) {
 			listModel.add(ptr++, s.name());
 		}

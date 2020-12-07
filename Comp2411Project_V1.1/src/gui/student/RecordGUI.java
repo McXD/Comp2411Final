@@ -105,7 +105,7 @@ public class RecordGUI extends JFrame {
 					csvWriter.append("\n\n\nHighest,Lowest,Average,Median\n");
 					double[] temp = StudentUtil.summarize0(records);
 					for(int i=0;i<4;i++) {
-						csvWriter.append(temp[i]+ i == 3? "\n" : ",");
+						csvWriter.append(temp[i] + (i == 3? "\n" : ","));
 					}
 					csvWriter.flush();
 					csvWriter.close();

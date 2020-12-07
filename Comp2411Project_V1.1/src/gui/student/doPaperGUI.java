@@ -671,8 +671,6 @@ public class doPaperGUI extends JFrame {
 							timeLabel.setText(dura.toString());
 							//time out
 							if (dura.isNegative() || dura.isZero()) {
-								JOptionPane.showMessageDialog(new JPanel(), "Time Up!");
-								timer.stop();
 								storePaper();
 							}
 						} catch (Exception e) {

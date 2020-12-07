@@ -163,7 +163,8 @@ public class ScheExamGUI extends JFrame {
 					}else if (sig == 2) {
 						throw new Exception(String.format("You have already set an exam\n for class %s on subject %s in sememster %s",
 																classText.getText(), subjectText.getText(),
-																Semester.inSemester(LocalDateTime.parse(startText.getText(), DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm:ss a"))).name()));
+																Semester.inSemester(LocalDateTime.parse(startText.getText(), DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm:ss a")),
+																	Integer.parseInt(classText.getText().strip().substring(0, 2)) + 2000).name()));
 					}
 					
 										

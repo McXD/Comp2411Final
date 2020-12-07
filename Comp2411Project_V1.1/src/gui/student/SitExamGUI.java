@@ -113,6 +113,7 @@ public class SitExamGUI extends JFrame {
 						public void run() {
 							try {
 								doPaperGUI frame = new doPaperGUI(SitExamGUI.this, sls, pending.get(0));
+								frame.setLocationRelativeTo(null);
 								frame.setVisible(true);
 							} catch (Exception e) {
 								e.printStackTrace();

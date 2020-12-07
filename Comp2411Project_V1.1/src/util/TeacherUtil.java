@@ -1,6 +1,7 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
@@ -173,7 +174,8 @@ public class TeacherUtil {
 			
 			if (i.cid.compareTo(toSet.cid) == 0 && i.subid.compareTo(toSet.subid) == 0) {
 				//check if they are in the same semester
-				if (Semester.inSemester(i.start) == Semester.inSemester(toSet.start)) return 2; //double sets
+				int startYear = Integer.parseInt(i.cid.substring(0, 2)) + 2000;
+				if (Semester.inSemester(i.start, startYear) == Semester.inSemester(toSet.start, startYear)) return 2; //double sets
 			}
 		}
 		return 0;
@@ -189,7 +191,8 @@ public class TeacherUtil {
 		LocalDateTime now = LocalDateTime.now();
 		for (Exam e:exams) {
 			//both finished and in current semester
-			if (e.start.plusMinutes(e.duration).isBefore(now) && Semester.inSemester(LocalDateTime.now()) == Semester.inSemester(e.start)) result.add(e);
+			int startYear = Integer.parseInt(e.forClass.cid.substring(0, 2)) + 2000;
+			if (e.start.plusMinutes(e.duration).isBefore(now) && Semester.inSemester(LocalDateTime.now(), startYear) == Semester.inSemester(e.start, startYear)) result.add(e);
 		}
 		return result;
 	}
@@ -214,6 +217,20 @@ public class TeacherUtil {
 			};
 		}
 		return result;
+	}
+
+	public static double[] summarize0(ArrayList<ExamResultRecord> records) {
+		//already sorted
+		if (records.size() == 0) return new double[] {0,0,0,0};
+		
+		
+		int avg = 0;
+		for (ExamResultRecord r : records) {
+			avg += r.grade;
+		}
+		avg /= records.size();
+		
+		return new double[] {records.get(0).grade, records.get(records.size()-1).grade, avg, records.get((records.size()-1)/2).grade};
 	}
 	
 }

@@ -231,7 +231,9 @@ public class StudentLoginSession
 			
 			while(rs.next()) {
 				LocalDateTime start = LocalDateTime.parse(rs.getTimestamp(5).toString(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
-				if (sem.isInSemester(start)) result.add(new SemesterRecord(new Student(rs.getString(2), rs.getString(1),null),
+				String cid = this.student.memberOf.cid;
+				int startYear = Integer.parseInt(cid.substring(0, 2)) + 2000;
+				if (sem.isInSemester(start, startYear)) result.add(new SemesterRecord(new Student(rs.getString(2), rs.getString(1),null),
 						new Subject(rs.getString(3)),
 						rs.getInt(4), rs.getString(6)));
 				else continue;

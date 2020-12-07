@@ -8,23 +8,23 @@ public enum Semester {
 	Y03S01,Y03S02,
 	Y04S01,Y04S02;
 	
-	public static Semester inSemester(LocalDateTime time) {
-			 if (time.isAfter(LocalDateTime.of(2019, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(2019, 12, 31, 0, 0))) return Y01S01;
-		else if (time.isAfter(LocalDateTime.of(2020, 1, 1, 0, 0)) && time.isBefore(LocalDateTime.of(2020, 6, 30, 0, 0))) return Y01S02;
+	public static Semester inSemester(LocalDateTime time, int beginYear) {
+			 if (time.isAfter(LocalDateTime.of(beginYear, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(beginYear, 12, 31, 0, 0))) return Y01S01;
+		else if (time.isAfter(LocalDateTime.of(beginYear+1, 1, 1, 0, 0)) && time.isBefore(LocalDateTime.of(beginYear+1, 6, 30, 0, 0))) return Y01S02;
 		
-		else if (time.isAfter(LocalDateTime.of(2020, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(2020, 12, 31, 0, 0))) return Y02S01;
-		else if (time.isAfter(LocalDateTime.of(2021, 1, 1, 0, 0)) && time.isBefore(LocalDateTime.of(2021, 6, 30, 0, 0))) return Y02S02;
+		else if (time.isAfter(LocalDateTime.of(beginYear+1, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(beginYear+1, 12, 31, 0, 0))) return Y02S01;
+		else if (time.isAfter(LocalDateTime.of(beginYear+2, 1, 1, 0, 0)) && time.isBefore(LocalDateTime.of(beginYear+2, 6, 30, 0, 0))) return Y02S02;
 		
-		else if (time.isAfter(LocalDateTime.of(2021, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(2021, 12, 31, 0, 0))) return Y03S01;
-		else if (time.isAfter(LocalDateTime.of(2022, 1, 1, 0, 0)) && time.isBefore(LocalDateTime.of(2022, 6, 30, 0, 0))) return Y03S02;
+		else if (time.isAfter(LocalDateTime.of(beginYear+2, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(beginYear+2, 12, 31, 0, 0))) return Y03S01;
+		else if (time.isAfter(LocalDateTime.of(beginYear+3, 1, 1, 0, 0)) && time.isBefore(LocalDateTime.of(beginYear+3, 6, 30, 0, 0))) return Y03S02;
 		
-		else if (time.isAfter(LocalDateTime.of(2022, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(2022, 12, 31, 0, 0))) return Y04S01;
+		else if (time.isAfter(LocalDateTime.of(beginYear+3, 9, 1, 0, 0)) && time.isBefore(LocalDateTime.of(beginYear+3, 12, 31, 0, 0))) return Y04S01;
 		else return Y04S02;
 		
 	}
 	
-	public boolean isInSemester(LocalDateTime time) {
-		return inSemester(time) == this;
+	public boolean isInSemester(LocalDateTime time, int beginYear) {
+		return inSemester(time, beginYear) == this;
 	}
 	
 	public static void main(String[] args) {

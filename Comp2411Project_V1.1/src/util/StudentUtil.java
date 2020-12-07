@@ -140,10 +140,10 @@ public class StudentUtil {
 		return result;
 	}
 	
-	public static ArrayList<Semester> getAvailableSememsters() {
+	public static ArrayList<Semester> getAvailableSememsters(int startYear) {
 		ArrayList<Semester> result= new ArrayList<Semester>();
 		LocalDateTime now = LocalDateTime.now();
-		Semester cur = Semester.inSemester(now);
+		Semester cur = Semester.inSemester(now, startYear);
 		for(Semester s : Semester.values()) {
 			if (s.ordinal() <= cur.ordinal()) {
 				result.add(s);
