@@ -1,14 +1,24 @@
 package util;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Scanner;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-import entity.*;
-import entity.question.*;
+import entity.AnswerSheet;
+import entity.Class0;
+import entity.Exam;
+import entity.ExamInfo;
+import entity.ExamResultRecord;
+import entity.Paper;
+import entity.Semester;
+import entity.Subject;
+import entity.Teacher;
+import entity.question.FbQuestion;
+import entity.question.FlQuestion;
+import entity.question.McQuestion;
+import entity.question.QuestionFactory;
 public class TeacherUtil {
 	
 	public static McQuestion designMc() {

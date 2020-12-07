@@ -18,9 +18,7 @@ import javax.swing.border.EmptyBorder;
 import connector.TeacherLoginSession;
 import entity.Exam;
 import entity.ExamResultRecord;
-import entity.SemesterRecord;
 import util.CommonUtil;
-import util.StudentUtil;
 import util.TeacherUtil;
 
 public class ReportGUI extends JFrame {
