@@ -141,9 +141,9 @@ public class ScheExamGUI extends JFrame {
 					exam = new entity.Exam(
 							tls.getTeacher(),
 							examIDText.getText(),
-							new Class0(classText.getText()),
-							new Subject(subjectText.getText()),
-							new Paper(paperIDText.getText()),
+							new Class0(classText.getText().trim()),
+							new Subject(subjectText.getText().trim()),
+							new Paper(paperIDText.getText().trim()),
 							LocalDateTime.parse(startText.getText(), DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm:ss a")),
 							Integer.parseInt(durationText.getText()));
 					

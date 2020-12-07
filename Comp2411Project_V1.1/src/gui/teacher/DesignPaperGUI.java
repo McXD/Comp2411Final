@@ -509,7 +509,6 @@ public class DesignPaperGUI extends JFrame {
 				
 				//Quit this session
 				dispose();
-				parent.setVisible(true);
 			}else {
 				//do nothing and return
 			}

@@ -84,7 +84,7 @@ public class SitExamGUI extends JFrame {
 		contentPane.add(examTable);
 		
 		scrollPane = new JScrollPane(examTable);
-		scrollPane.setBounds(77, 184, 419, 167);
+		scrollPane.setBounds(18, 184, 537, 167);
 		contentPane.add(scrollPane);
 		
 		JLabel hoorayLabel = new JLabel("Hooray! There's no exam!");
