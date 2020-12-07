@@ -71,7 +71,7 @@ public class ScheExamGUI extends JFrame {
 		
 		JLabel examInfoLabel = new JLabel("Exam Information");
 		examInfoLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 30));
-		examInfoLabel.setBounds(126, 63, 320, 58);
+		examInfoLabel.setBounds(126, 63, 349, 58);
 		contentPane.add(examInfoLabel);
 		
 		JPanel panel = new JPanel();
