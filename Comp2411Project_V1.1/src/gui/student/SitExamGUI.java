@@ -87,10 +87,10 @@ public class SitExamGUI extends JFrame {
 		scrollPane.setBounds(77, 184, 419, 167);
 		contentPane.add(scrollPane);
 		
-		JLabel horrayLabel = new JLabel("Horray! There's no exam!");
-		horrayLabel.setFont(new Font("Lucida Console", Font.ITALIC, 25));
-		horrayLabel.setBounds(97, 245, 378, 34);
-		contentPane.add(horrayLabel);
+		JLabel hoorayLabel = new JLabel("Hooray! There's no exam!");
+		hoorayLabel.setFont(new Font("Lucida Console", Font.ITALIC, 25));
+		hoorayLabel.setBounds(97, 245, 378, 34);
+		contentPane.add(hoorayLabel);
 		
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(new ActionListener() {
@@ -129,13 +129,13 @@ public class SitExamGUI extends JFrame {
 		if (hasExam) {
 			//display the exams in a table
 			examTable.setVisible(true);
-			horrayLabel.setVisible(false);
+			hoorayLabel.setVisible(false);
 			sitButton.setEnabled(true);
 			
 		}else {
 			examTable.setVisible(false);
 			scrollPane.setVisible(false);
-			horrayLabel.setVisible(true);
+			hoorayLabel.setVisible(true);
 			sitButton.setEnabled(false);
 		}
 		

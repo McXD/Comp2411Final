@@ -69,6 +69,7 @@ public class RecordGUI extends JFrame {
 		contentPane.add(table);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setEnabled(false);
 		scrollPane.setBounds(138, 98, 296, 274);
 		contentPane.add(scrollPane);
 		

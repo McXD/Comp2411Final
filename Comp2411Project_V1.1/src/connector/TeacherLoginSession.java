@@ -228,7 +228,7 @@ public class TeacherLoginSession {
 		try {
 			ArrayList<AnswerSheet> result = new ArrayList<AnswerSheet>();
 			String query = "SELECT s.s_id, s.answer_sheet.answer_mc, s.answer_sheet.answer_fb, s.answer_sheet.answer_fl FROM sits s"
-					+ " WHERE e_id = ? AND t_id = ?";
+					+ " WHERE e_id = ? AND t_id = ? AND feedback is null";
 			PreparedStatement pst = con.prepareStatement(query);
 			
 			pst.setString(1, exam.eid);
@@ -330,9 +330,14 @@ public class TeacherLoginSession {
 		}
 	}
 	
+	/**
+	 * get records that are fully marked
+	 * @param exam
+	 * @return
+	 */
 	public ArrayList<ExamResultRecord> getRecordForExam(Exam exam){
 		try {
-			String query = "select e_id,s_id, s_name, c_id,grade from sits natural join student natural join member_of where t_id = ? and e_id = ?";
+			String query = "select e_id,s_id, s_name, c_id,grade from sits natural join student natural join member_of where t_id = ? and e_id = ? and feedback is not null order by grade desc";
 			PreparedStatement pst = con.prepareStatement(query);
 			
 			pst.setString(1, exam.creator.tid);

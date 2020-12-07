@@ -28,6 +28,7 @@ import util.TeacherUtil;
 public class DesignPaperGUI extends JFrame {
 
 	Paper paper;
+	JFrame parent;
 	Exam exam;
 	TeacherLoginSession tls;
 
@@ -38,7 +39,7 @@ public class DesignPaperGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DesignPaperGUI frame = new DesignPaperGUI(null,null);
+					DesignPaperGUI frame = new DesignPaperGUI(null,null,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -60,10 +61,11 @@ public class DesignPaperGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DesignPaperGUI(TeacherLoginSession tls, Exam exam) {
+	public DesignPaperGUI(JFrame parent, TeacherLoginSession tls, Exam exam) {
 		this.tls = tls;
 		this.exam = exam;
 		this.paper = exam.withPaper;
+		this.parent = parent;
 		
 		/*Main Panel*/
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -507,6 +509,7 @@ public class DesignPaperGUI extends JFrame {
 				
 				//Quit this session
 				dispose();
+				parent.setVisible(true);
 			}else {
 				//do nothing and return
 			}

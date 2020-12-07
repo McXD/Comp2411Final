@@ -12,8 +12,9 @@ public class Exam {
 	public final int duration;
 	
 	public Exam(Teacher creator, String eid, Class0 forClass, Subject onSubject, Paper withPaper,
-						LocalDateTime start, int duration) {
+						LocalDateTime start, int duration) throws IllegalArgumentException{
 		this.creator = creator;
+		if (eid.length() > 4) throw new IllegalArgumentException("Invalid Exam ID");
 		this.eid = eid;
 		this.forClass = forClass;
 		this.onSubject = onSubject;

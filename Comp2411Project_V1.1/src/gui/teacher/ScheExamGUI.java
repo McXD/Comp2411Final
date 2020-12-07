@@ -75,7 +75,7 @@ public class ScheExamGUI extends JFrame {
 		contentPane.add(examInfoLabel);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(139, 148, 294, 152);
+		panel.setBounds(139, 186, 294, 152);
 		contentPane.add(panel);
 		panel.setLayout(new GridLayout(6, 2, 2, 2));
 		
@@ -104,14 +104,17 @@ public class ScheExamGUI extends JFrame {
 		subjectText.setColumns(10);
 		
 		JLabel startLabel = new JLabel("Start: ");
+		startLabel.setToolTipText("(Input start time should be like 01-Dec-2020 12:00:00 AM)");
 		startLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel.add(startLabel);
 		
 		startText = new JTextField();
+		startText.setToolTipText("(Input start time should be like 01-Dec-2020 12:00:00 AM)");
 		panel.add(startText);
 		startText.setColumns(10);
 		
 		JLabel durationLabel = new JLabel("Duration(in minute): ");
+		durationLabel.setToolTipText("");
 		durationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel.add(durationLabel);
 		
@@ -169,7 +172,7 @@ public class ScheExamGUI extends JFrame {
 						public void run() {
 							try {
 								setVisible(false);
-								DesignPaperGUI frame = new DesignPaperGUI(tls, exam);
+								DesignPaperGUI frame = new DesignPaperGUI(ScheExamGUI.this, tls, exam);
 								frame.setLocationRelativeTo(null);
 								frame.setVisible(true);
 							} catch (Exception e) {
@@ -192,11 +195,6 @@ public class ScheExamGUI extends JFrame {
 		});
 		designPaperButton.setBounds(445, 427, 118, 32);
 		contentPane.add(designPaperButton);
-		
-		JLabel lblNewLabel = new JLabel("(Input start time should be like 01-Dec-2020 12:00:00 AM)");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(76, 335, 421, 14);
-		contentPane.add(lblNewLabel);
 		
 		JButton exitButton = new JButton("Exit");
 		exitButton.addActionListener(new ActionListener() {

@@ -85,9 +85,9 @@ public class StudentUtil {
 		
 		LocalDateTime now = LocalDateTime.now();
 		ArrayList<Exam> result = new ArrayList<Exam>();
-		
+		//display the exams such that: now - 60mins < e.start
 		for (Exam e:allExams) {
-			if (e.start.isAfter(now)) result.add(e);
+			if (e.start.isAfter(now.minusMinutes(60))) result.add(e);
 		}
 		
 		result.sort(new Comparator<Exam>() {
@@ -115,19 +115,19 @@ public class StudentUtil {
 	}
 	
 	public static boolean canSitNow(LocalDateTime examTime) {
-		LocalDateTime now = LocalDateTime.now();
+//		LocalDateTime now = LocalDateTime.now();
+//		
+//		if (now.getYear() == examTime.getYear()) {
+//			if (now.getMonth() == examTime.getMonth()) {
+//				if (now.getHour() == examTime.getHour()) {
+//					if (now.getMinute()-examTime.getMinute() < 5 && now.getMinute() - examTime.getMinute() > -5) {
+//						return true;
+//					}
+//				}
+//			}
+//		}
 		
-		if (now.getYear() == examTime.getYear()) {
-			if (now.getMonth() == examTime.getMonth()) {
-				if (now.getHour() == examTime.getHour()) {
-					if (now.getMinute()-examTime.getMinute() < 5 && now.getMinute() - examTime.getMinute() > -5) {
-						return true;
-					}
-				}
-			}
-		}
-		
-		return false;
+		return true;
 	}
 	
 	public static Object[][] getRecordTable(ArrayList<StudentRecord> records){

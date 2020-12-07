@@ -111,11 +111,11 @@ public class MarkPaperGUI extends JFrame {
 		goButton.setBounds(474, 436, 89, 23);
 		contentPane.add(goButton);
 		
-		JLabel horrayLabel = new JLabel("Horray! No paper to be graded!");
-		horrayLabel.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 26));
-		horrayLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		horrayLabel.setBounds(19, 197, 534, 76);
-		contentPane.add(horrayLabel);
+		JLabel hoorayLabel = new JLabel("Hooray! No paper to be graded!");
+		hoorayLabel.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 26));
+		hoorayLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		hoorayLabel.setBounds(19, 197, 534, 76);
+		contentPane.add(hoorayLabel);
 		
 		JButton exitButton = new JButton("Exit");
 		exitButton.addActionListener(new ActionListener() {
@@ -134,11 +134,11 @@ public class MarkPaperGUI extends JFrame {
 		
 		if (ptr == 0) {
 			titleLabel.setVisible(false);
-			horrayLabel.setVisible(true);
+			hoorayLabel.setVisible(true);
 			examList.setVisible(false);
 			scrollPane.setVisible(false);
 		}else {
-			horrayLabel.setVisible(false);
+			hoorayLabel.setVisible(false);
 			examList.setSelectedIndex(0);
 			selected = finishedExams.get(0);
 			examList.setVisible(true);

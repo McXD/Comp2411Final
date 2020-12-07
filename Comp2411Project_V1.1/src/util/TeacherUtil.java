@@ -179,11 +179,17 @@ public class TeacherUtil {
 		return 0;
 	}
 	
+	/**
+	 * Get all finished exams for current semester
+	 * @param exams
+	 * @return
+	 */
 	public static ArrayList<Exam> getAllFinishedExams(ArrayList<Exam> exams){
 		ArrayList<Exam> result = new ArrayList<Exam>();
 		LocalDateTime now = LocalDateTime.now();
 		for (Exam e:exams) {
-			if (e.start.plusMinutes(e.duration).isBefore(now)) result.add(e);
+			//both finished and in current semester
+			if (e.start.plusMinutes(e.duration).isBefore(now) && Semester.inSemester(LocalDateTime.now()) == Semester.inSemester(e.start)) result.add(e);
 		}
 		return result;
 	}

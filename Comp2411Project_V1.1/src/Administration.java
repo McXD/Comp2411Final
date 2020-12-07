@@ -132,6 +132,7 @@ public class Administration {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		
+		System.out.print("Input: ");
 		int choice = sc.nextInt();
 		switch (choice) {
 		case 1:
