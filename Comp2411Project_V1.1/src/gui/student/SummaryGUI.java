@@ -100,7 +100,7 @@ public class SummaryGUI extends JFrame {
 		int ptr = 0;
 		
 		int startYear = Integer.parseInt(sls.getStudent().memberOf.cid.substring(0, 2)) + 2000;
-		sems = StudentUtil.getAvailableSememsters(startYear);
+		sems = StudentUtil.getAvailableSemesters(startYear);
 		for (Semester s: sems) {
 			listModel.add(ptr++, s.name());
 		}

@@ -20,7 +20,7 @@ public class TeacherLoginSession {
 	private OracleConnection con;
 	
 	
-	public TeacherLoginSession(String tid, String pw) throws IdentityException{
+	public TeacherLoginSession(String tid, String pw) throws IdentityException, SQLException{
 		try {
 			//Connect to Oracle DataBase
 			File file = new File("config.txt");
@@ -82,9 +82,6 @@ public class TeacherLoginSession {
 				//No Auto commit
 				con.setAutoCommit(false);
 			}
-		} catch (SQLException e) {
-			//never reached
-			e.printStackTrace();
 		} catch (FileNotFoundException fe) {
 			fe.printStackTrace();
 		}
@@ -356,7 +353,7 @@ public class TeacherLoginSession {
 		}
 	}
 	
-	public ArrayList<ExamInfo> getExmInfo(){
+	public ArrayList<ExamInfo> getExamInfo(){
 		try {
 			String query = "select t_id, c_id, sub_id, e_start, e_id from exam_sche natural join sets where t_id = ?";
 			PreparedStatement pst = con.prepareStatement(query);

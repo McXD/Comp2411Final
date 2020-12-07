@@ -212,7 +212,7 @@ public class TeacherUtil {
 	}
 	
 	public static String summarizePaper(Paper paper) {
-		return "good";
+		return String.format("You have designed %d MCs, %d FBs, %d FLs" , paper.getMcs().size(), paper.getFbs().size(), paper.getFls().size());
 	}
 	
 	public static Object[][] record2Table(ArrayList<ExamResultRecord> records){

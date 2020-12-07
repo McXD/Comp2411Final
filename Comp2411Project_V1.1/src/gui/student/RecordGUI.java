@@ -61,7 +61,7 @@ public class RecordGUI extends JFrame {
 		contentPane.add(titleLabel);
 		
 		String[] colNames = {"Subject", "Grade", "Letter Grade", "Feedback"};
-		ArrayList<SemesterRecord> records = sls.getSemeterRecords(sem);
+		ArrayList<SemesterRecord> records = sls.getSemesterRecords(sem);
 		Object[][] content = StudentUtil.semeterRecord2Table(records);
 		
 		table = new JTable(content, colNames);

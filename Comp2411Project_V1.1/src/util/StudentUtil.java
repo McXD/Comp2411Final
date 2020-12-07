@@ -140,7 +140,7 @@ public class StudentUtil {
 		return result;
 	}
 	
-	public static ArrayList<Semester> getAvailableSememsters(int startYear) {
+	public static ArrayList<Semester> getAvailableSemesters(int startYear) {
 		ArrayList<Semester> result= new ArrayList<Semester>();
 		LocalDateTime now = LocalDateTime.now();
 		Semester cur = Semester.inSemester(now, startYear);

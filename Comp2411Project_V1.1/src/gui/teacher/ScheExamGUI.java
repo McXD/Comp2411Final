@@ -156,7 +156,7 @@ public class ScheExamGUI extends JFrame {
 					ExamInfo toSet = new ExamInfo(tls.getTeacher().tid, classText.getText(),
 										subjectText.getText(), LocalDateTime.parse(startText.getText(), DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm:ss a")),
 												examIDText.getText());
-					ArrayList<ExamInfo> already = tls.getExmInfo();
+					ArrayList<ExamInfo> already = tls.getExamInfo();
 					int sig = TeacherUtil.checkDuplicity(already, toSet);
 					if (sig == 1) {
 						throw new Exception("Duplicated Exam ID");

@@ -1,22 +1,28 @@
 package connector;
-import entity.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import oracle.jdbc.driver.*;
+import entity.AnswerSheet;
+import entity.Class0;
+import entity.Exam;
+import entity.Paper;
+import entity.Semester;
+import entity.SemesterRecord;
+import entity.Student;
+import entity.StudentRecord;
+import entity.Subject;
+import entity.Teacher;
 import exception.IdentityException;
+import oracle.jdbc.driver.OracleConnection;
 
-/**
- * Connect to database as a student
- * @author Feng
- *
- */
 public class StudentLoginSession
 {
 	private Student student;
@@ -26,7 +32,7 @@ public class StudentLoginSession
 		return student;
 	}
 	
-	public StudentLoginSession(String sid, String pw) throws IdentityException{
+	public StudentLoginSession(String sid, String pw) throws IdentityException, SQLException{
 		try {
 			//Connect to Oracle DB
 			File file = new File("config.txt");
@@ -81,9 +87,6 @@ public class StudentLoginSession
 				
 				con.setAutoCommit(false);
 			}
-		} catch (SQLException e) {
-			System.err.println("An error occured when trying to connect to DB");
-			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -219,7 +222,7 @@ public class StudentLoginSession
 		}
 	}
 	
-	public ArrayList<SemesterRecord> getSemeterRecords(Semester sem){
+	public ArrayList<SemesterRecord> getSemesterRecords(Semester sem){
 		try {
 			ArrayList<SemesterRecord> result = new ArrayList<SemesterRecord>();
 			
