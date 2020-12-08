@@ -39,7 +39,7 @@ public class ScheExamGUI extends JFrame {
 	private JTextField examIDText;
 	private JTextField durationText;
 	private JTextField paperIDText;
-
+	private JButton exitButton;
 	/**
 	 * Launch the application.
 	 */
@@ -197,7 +197,7 @@ public class ScheExamGUI extends JFrame {
 		designPaperButton.setBounds(445, 427, 118, 32);
 		contentPane.add(designPaperButton);
 		
-		JButton exitButton = new JButton("Exit");
+		exitButton = new JButton("Exit");
 		exitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
@@ -206,5 +206,9 @@ public class ScheExamGUI extends JFrame {
 		});
 		exitButton.setBounds(10, 427, 118, 32);
 		contentPane.add(exitButton);
+	}
+	
+	public JButton getExitButton() {
+		return this.exitButton;
 	}
 }

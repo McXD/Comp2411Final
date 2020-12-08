@@ -65,19 +65,19 @@ public class TrulyMarkPaperGUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		JLabel indexLabel = new JLabel("1/10");
+		JLabel indexLabel = new JLabel("1/10: ");
 		indexLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		indexLabel.setBounds(41, 24, 48, 14);
+		indexLabel.setBounds(41, 11, 48, 14);
 		contentPane.add(indexLabel);
 		
 		
 		JTextArea sheetTextArea = new JTextArea();
 		sheetTextArea.setEditable(false);
-		sheetTextArea.setBounds(-24, 55, 5, 15);
+		sheetTextArea.setBounds(10, 0, 5, 15);
 		contentPane.add(sheetTextArea);
 		
 		JScrollPane scrollPane = new JScrollPane(sheetTextArea);
-		scrollPane.setBounds(99, 24, 374, 276);
+		scrollPane.setBounds(99, 177, 374, 123);
 		contentPane.add(scrollPane);
 		
 		markTextField = new JTextField("");
@@ -110,7 +110,7 @@ public class TrulyMarkPaperGUI extends JFrame {
 					JOptionPane.showMessageDialog(new JPanel(), "You haven't mark this sheet yet!");
 				}else {
 					tls.grade(sheets.get(ptr), Integer.parseInt(markTextField.getText()),
-							feedbackText.getText());
+							feedbackText.getText()==null ? "This teacher was lazy and wrote nothing" : feedbackText.getText());
 					markTextField.setText("");
 					feedbackText.setText("This teacher was lazy and wrote nothing");
 				}
@@ -126,14 +126,14 @@ public class TrulyMarkPaperGUI extends JFrame {
 					JOptionPane.showMessageDialog(new JPanel(), "You haven't mark this sheet yet!");
 				}else {
 					tls.grade(sheets.get(ptr), Integer.parseInt(markTextField.getText()),
-							feedbackText.getText());
+							feedbackText.getText()==null ? "This teacher was lazy and wrote nothing" : feedbackText.getText());
 					markTextField.setText("");
 					feedbackText.setText("This teacher was lazy and wrote nothing");
 				}
 				
 				//forward to the next question
 				ptr++;
-				indexLabel.setText(ptr + "/" + number);
+				indexLabel.setText(ptr+1 + "/" + number);
 				sheetTextArea.setText(sheets.get(ptr).toString(1));
 				
 				//this sheet is the last one
@@ -154,6 +154,24 @@ public class TrulyMarkPaperGUI extends JFrame {
 		exitButton.setBounds(10, 436, 89, 23);
 		contentPane.add(exitButton);
 		
+		JLabel questionLabel = new JLabel("Question:");
+		questionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		questionLabel.setBounds(30, 36, 59, 14);
+		contentPane.add(questionLabel);
+		
+		JTextArea questionText = new JTextArea();
+		questionText.setBounds(0, 0, 5, 15);
+		contentPane.add(questionText);
+		
+		JScrollPane questionPane = new JScrollPane(questionText);
+		questionPane.setBounds(99, 36, 374, 130);
+		contentPane.add(questionPane);
+		
+		JLabel answerLabel = new JLabel("Answer:");
+		answerLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		answerLabel.setBounds(41, 177, 48, 14);
+		contentPane.add(answerLabel);
+		
 		
 
 		/*Initialization*/
@@ -165,6 +183,7 @@ public class TrulyMarkPaperGUI extends JFrame {
 			indexLabel.setText(1 + "/" + number);
 			
 			sheetTextArea.setText(sheets.get(0).toString(1));
+			questionText.setText(exam.withPaper.toString(1));
 			
 			if (number == 1) nextButton.setEnabled(false);
 		}

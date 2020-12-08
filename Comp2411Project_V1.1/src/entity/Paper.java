@@ -59,4 +59,15 @@ public class Paper {
 	public ArrayList<FbQuestion> getFbs(){
 		return this.fbs;
 	}
+	
+	public String toString(int foo) {
+		//all the fl questions
+		StringBuilder sb = new StringBuilder();
+		int index = 1;
+		for (FlQuestion q : fls) {
+			sb.append(index++ + ": " + q.toString() + "\n\n");
+		}
+		
+		return sb.toString();
+	}
 }

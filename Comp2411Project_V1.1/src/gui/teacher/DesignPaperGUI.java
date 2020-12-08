@@ -24,6 +24,8 @@ import connector.TeacherLoginSession;
 import entity.Exam;
 import entity.Paper;
 import util.TeacherUtil;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class DesignPaperGUI extends JFrame {
 
@@ -93,6 +95,12 @@ public class DesignPaperGUI extends JFrame {
 		mcTabPanel.setLayout(null);
 		
 		JTextArea mcQuestionTextArea = new JTextArea("Question goes here...");
+		mcQuestionTextArea.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mcQuestionTextArea.selectAll();
+			}
+		});
 		mcQuestionTextArea.setLineWrap(true);
 		mcQuestionTextArea.setBounds(10, 44, 156, 70);
 		mcTabPanel.add(mcQuestionTextArea);
@@ -107,6 +115,12 @@ public class DesignPaperGUI extends JFrame {
 		mcTabPanel.add(optionALabel);
 		
 		JTextArea optionAText = new JTextArea();
+		optionAText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				optionAText.selectAll();
+			}
+		});
 		optionAText.setText("Option A");
 		optionAText.setBounds(130, 154, 297, 25);
 		mcTabPanel.add(optionAText);
@@ -116,6 +130,12 @@ public class DesignPaperGUI extends JFrame {
 		mcTabPanel.add(optionAScrollPane);
 		
 		JTextArea optionBText = new JTextArea();
+		optionBText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				optionBText.selectAll();
+			}
+		});
 		optionBText.setText("Option B");
 		optionBText.setBounds(130, 190, 297, 25);
 		mcTabPanel.add(optionBText);
@@ -132,6 +152,12 @@ public class DesignPaperGUI extends JFrame {
 		JTextArea optionCText = new JTextArea();
 		optionCText.setText("Option C");
 		optionCText.setBounds(130, 231, 297, 25);
+		optionCText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				optionCText.selectAll();
+			}
+		});
 		mcTabPanel.add(optionCText);
 		
 		JScrollPane optionCScrollPane = new JScrollPane(optionCText);
@@ -146,6 +172,12 @@ public class DesignPaperGUI extends JFrame {
 		JTextArea optionDText = new JTextArea();
 		optionDText.setText("Option D");
 		optionDText.setBounds(130, 267, 297, 25);
+		optionDText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				optionDText.selectAll();
+			}
+		});
 		mcTabPanel.add(optionDText);
 		
 		JScrollPane optionDScrollPane = new JScrollPane(optionDText);
@@ -304,6 +336,12 @@ public class DesignPaperGUI extends JFrame {
 		JTextArea fbTextArea = new JTextArea("Question goes here");
 		fbTextArea.setLineWrap(true);
 		fbTextArea.setBounds(130, 86, 297, 102);
+		fbTextArea.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				fbTextArea.selectAll();
+			}
+		});
 		fbTabPanel.add(fbTextArea);
 		
 		JScrollPane fbQuestionTextScrollPane = new JScrollPane(fbTextArea);
@@ -349,6 +387,12 @@ public class DesignPaperGUI extends JFrame {
 		fbAnswerTextArea.setText("Answer goes here...");
 		fbAnswerTextArea.setLineWrap(true);
 		fbAnswerTextArea.setBounds(130, 260, 297, 76);
+		fbAnswerTextArea.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				fbAnswerTextArea.selectAll();
+			}
+		});
 		fbTabPanel.add(fbAnswerTextArea);
 		
 		JScrollPane fbAnswerScrollPane = new JScrollPane(fbAnswerTextArea);
@@ -407,6 +451,12 @@ public class DesignPaperGUI extends JFrame {
 		JTextArea flTextArea = new JTextArea("Question goes here...");
 		flTextArea.setLineWrap(true);
 		flTextArea.setBounds(130, 67, 297, 216);
+		fbTextArea.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				flTextArea.selectAll();
+			}
+		});
 		flTabPanel.add(flTextArea);
 		
 		JScrollPane scrollPane = new JScrollPane(flTextArea);
@@ -509,6 +559,7 @@ public class DesignPaperGUI extends JFrame {
 				
 				//Quit this session
 				dispose();
+				((ScheExamGUI)parent).getExitButton().doClick();;
 			}else {
 				//do nothing and return
 			}

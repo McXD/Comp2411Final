@@ -128,7 +128,7 @@ public class MarkPaperGUI extends JFrame {
 		exitButton.setBounds(10, 436, 89, 23);
 		contentPane.add(exitButton);
 		
-		JLabel titleLabel = new JLabel(String.format("%8s %8s %15s", "Exam ID", "Class", "Subject"));
+		JLabel titleLabel = new JLabel(String.format("%-25s %-25s %-20s", "Exam ID", "Class", "Subject"));
 		titleLabel.setBounds(135, 185, 303, 14);
 		contentPane.add(titleLabel);
 		

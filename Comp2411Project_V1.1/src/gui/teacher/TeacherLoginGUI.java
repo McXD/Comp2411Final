@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import connector.TeacherLoginSession;
+import exception.IdentityException;
 
 
 public class TeacherLoginGUI extends JFrame {
@@ -104,22 +106,27 @@ public class TeacherLoginGUI extends JFrame {
 				@SuppressWarnings("deprecation")
 				String inputPW = PWTextField.getText();
 				
-				if (!checkIndentity(inputID, inputPW)) {
-					JOptionPane.showMessageDialog(new JFrame(), "Invalid ID or Password!", "Warning",JOptionPane.WARNING_MESSAGE);
-				}else {
-					//call new frame
-					setVisible(false);
-					EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							try {
-								TeacherEntranceGUI frame = new TeacherEntranceGUI(tls);
-								frame.setLocationRelativeTo(null);
-								frame.setVisible(true);
-							} catch (Exception e) {
-								e.printStackTrace();
+				try {
+					if (!checkIndentity(inputID, inputPW)) {
+						JOptionPane.showMessageDialog(new JFrame(), "Invalid ID or Password!", "Warning",JOptionPane.WARNING_MESSAGE);
+					}else {
+						//call new frame
+						setVisible(false);
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								try {
+									TeacherEntranceGUI frame = new TeacherEntranceGUI(tls);
+									frame.setLocationRelativeTo(null);
+									frame.setVisible(true);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 							}
-						}
-					});
+						});
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(new JFrame(), "No Database Connection!", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -127,11 +134,11 @@ public class TeacherLoginGUI extends JFrame {
 		});
 	}
 	
-	private boolean checkIndentity(String id, String pw) {
+	private boolean checkIndentity(String id, String pw) throws SQLException {
 		try {
 			tls = new TeacherLoginSession(id, pw);
 			return true;
-		}catch(Exception e) {
+		}catch(IdentityException ie) {
 			return false;
 		}
 	}

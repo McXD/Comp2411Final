@@ -53,7 +53,7 @@ public class SummaryGUI extends JFrame {
 		this.sls = sls;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 585, 505);
+		setBounds(100, 100, 391, 336);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -61,7 +61,7 @@ public class SummaryGUI extends JFrame {
 		
 		JLabel infoLabel = new JLabel("Choose A Sememster");
 		infoLabel.setFont(new Font("Arial Black", Font.PLAIN, 26));
-		infoLabel.setBounds(133, 69, 306, 58);
+		infoLabel.setBounds(36, 30, 306, 58);
 		contentPane.add(infoLabel);
 		
 		JButton checkButton = new JButton("Check");
@@ -81,7 +81,7 @@ public class SummaryGUI extends JFrame {
 				});
 			}
 		});
-		checkButton.setBounds(474, 436, 89, 23);
+		checkButton.setBounds(280, 265, 89, 23);
 		checkButton.setEnabled(false);
 		contentPane.add(checkButton);
 		
@@ -92,7 +92,7 @@ public class SummaryGUI extends JFrame {
 				parent.setVisible(true);
 			}
 		});
-		exitButton.setBounds(10, 436, 89, 23);
+		exitButton.setBounds(10, 265, 89, 23);
 		contentPane.add(exitButton);
 		
 		
@@ -120,7 +120,7 @@ public class SummaryGUI extends JFrame {
 		contentPane.add(semesterList);
 		
 		JScrollPane scrollPane = new JScrollPane(semesterList);
-		scrollPane.setBounds(192, 147, 188, 250);
+		scrollPane.setBounds(105, 99, 169, 137);
 		contentPane.add(scrollPane);
 	
 	}

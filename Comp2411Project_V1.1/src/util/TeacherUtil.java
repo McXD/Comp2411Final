@@ -208,7 +208,7 @@ public class TeacherUtil {
 	}
 	
 	public static String getExamInfoForTeacher(Exam exam) {
-		return String.format("%8s %8s %15s", exam.eid, exam.forClass, exam.onSubject);
+		return String.format("%-20s %-20s %-20s", exam.eid, exam.forClass, exam.onSubject);
 	}
 	
 	public static String summarizePaper(Paper paper) {

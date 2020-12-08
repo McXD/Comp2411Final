@@ -48,14 +48,14 @@ public class StudentEntranceGUI extends JFrame {
 		this.sls = sls;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 585, 505);
+		setBounds(100, 100, 532, 382);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(152, 159, 268, 151);
+		panel.setBounds(126, 128, 268, 151);
 		contentPane.add(panel);
 		panel.setLayout(new GridLayout(3, 0, 2, 2));
 		
@@ -122,7 +122,7 @@ public class StudentEntranceGUI extends JFrame {
 		
 		JLabel queryLabel = new JLabel("What would you like to do?");
 		queryLabel.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 25));
-		queryLabel.setBounds(84, 53, 405, 39);
+		queryLabel.setBounds(57, 53, 405, 39);
 		contentPane.add(queryLabel);
 	}
 
