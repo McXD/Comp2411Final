@@ -115,17 +115,17 @@ public class StudentUtil {
 	}
 	
 	public static boolean canSitNow(LocalDateTime examTime) {
-//		LocalDateTime now = LocalDateTime.now();
-//		
-//		if (now.getYear() == examTime.getYear()) {
-//			if (now.getMonth() == examTime.getMonth()) {
-//				if (now.getHour() == examTime.getHour()) {
-//					if (now.getMinute()-examTime.getMinute() < 5 && now.getMinute() - examTime.getMinute() > -5) {
-//						return true;
-//					}
-//				}
-//			}
-//		}
+		LocalDateTime now = LocalDateTime.now();
+		
+		if (now.getYear() == examTime.getYear()) {
+			if (now.getMonth() == examTime.getMonth()) {
+				if (now.getHour() == examTime.getHour()) {
+					if (now.getMinute()-examTime.getMinute() < 5 && now.getMinute() - examTime.getMinute() > -5) {
+						return true;
+					}
+				}
+			}
+		}
 		
 		return true;
 	}
@@ -167,7 +167,7 @@ public class StudentUtil {
 		records.sort(new Comparator<SemesterRecord>() {
 			@Override
 			public int compare(SemesterRecord arg0, SemesterRecord arg1) {
-				return arg0.grade - arg1.grade;
+				return arg1.grade - arg0.grade;
 			}
 		});
 		
